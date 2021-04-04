@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">weather</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="gps">جي بي اس</string>
+    <string name="map">الخريطة</string>
+    <string name="Location">الموقع</string>
+    <string name="language">اللغة</string>
+    <string name="Arabic">عربي</string>
+    <string name="English">انجليزي</string>
+    <string name="WindSpeed">سرعة الرياح</string>
+    <string name="mpersec">متر/ُث</string>
+    <string name="mileperhour">ميل/س</string>
+    <string name="Temperature">درجة الحرارة</string>
+    <string name="Kelvin">كيلفن</string>
+    <string name="Celsius">سلزيوس</string>
+    <string name="farhrenheit">فهرنهايت</string>
+    <string name="Notifications">اشعارات</string>
+    <string name="enable">تفعيل</string>
+    <string name="disable">تعطيل</string>
+    <string name="date">تاريخ</string>
+    <string name="cloud">غيوم</string>
+    <string name="humidity">رطوبة</string>
+    <string name="ultra_voilt">اشغة بنفسجية</string>
+    <string name="visibility">الرؤية</string>
+    <string name="pressure">الضغط</string>
+    <string name="wind">الرياح</string>
+    <string name="add">اضف</string>
+    <string name="cancle">الغاء</string>
+    <string name="set_your_location">من فضلك ادخل موقعك</string>
+    <string name="OK">حسنا</string>
+    <string name="please_set_your_loction">من فضلك ادخل موقعك</string>
+    <string name="go_to_setting">اذهب للاعدادات</string>
+    <string name="setting">الاعدادات</string>
+    <string name="favorite">مفضل</string>
+    <string name="alerts">منبه</string>
+    <string name="home">الرئيسي</string>
+    <string name="hide">اخفاء</string>
+    <string name="set_you_location">حدد موقعك</string>
+
+    <string name="no_internet_connection">لا يوجد اتصال بالنت</string>
+
+    <string-array name="alert_types">
+        <item>temperature</item>
+        <item>wind</item>
+        <item>visibility</item>
+        <item>humidity</item>
+        <item>pressure</item>
+    </string-array>
+</resources>

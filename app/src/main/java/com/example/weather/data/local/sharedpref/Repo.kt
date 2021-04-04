@@ -1,0 +1,42 @@
+package com.example.weather.data.local.sharedpref
+
+import com.example.weather.data.remote.retrofit.WeatherRepo
+
+class Repo {
+
+    var data:ISharedprefer
+
+    init {
+        data=Sharedprefer
+    }
+
+
+    companion object{
+        var repo: Repo? =null
+
+        fun getInstance(): Repo? {
+            if(repo ==null){
+                synchronized (WeatherRepo::class.java){
+                    if(repo ==null){
+                        repo = Repo()
+                    }
+                }
+            }
+            return repo
+        }
+    }
+
+    fun getLat():Float{
+      return  data.getLat()
+    }
+
+
+
+   fun  getlng():Float{
+
+       return data.getLng()
+   }
+
+
+
+}

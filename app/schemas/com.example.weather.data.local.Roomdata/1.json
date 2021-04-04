@@ -1,0 +1,70 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "028776930543c2ff16542ffc87d1b960",
+    "entities": [
+      {
+        "tableName": "weather_table",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`current` TEXT, `timezone` TEXT, `timezoneOffset` REAL, `daily` TEXT, `lon` REAL NOT NULL, `hourly` TEXT, `lat` REAL NOT NULL, PRIMARY KEY(`lon`))",
+        "fields": [
+          {
+            "fieldPath": "current",
+            "columnName": "current",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "timezone",
+            "columnName": "timezone",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "timezoneOffset",
+            "columnName": "timezoneOffset",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "daily",
+            "columnName": "daily",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lon",
+            "columnName": "lon",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "hourly",
+            "columnName": "hourly",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "lat",
+            "columnName": "lat",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "lon"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '028776930543c2ff16542ffc87d1b960')"
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">weather</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="gps">Gps</string>
+    <string name="map">Map</string>
+    <string name="Location">Location</string>
+    <string name="language">Language</string>
+    <string name="Arabic">Arabic</string>
+    <string name="English">English</string>
+    <string name="WindSpeed">Wind Speed</string>
+    <string name="mpersec">meter/sec</string>
+    <string name="mileperhour">mile/hour</string>
+    <string name="Temperature">Temperature</string>
+    <string name="Kelvin">Kelvin</string>
+    <string name="Celsius">Celsius</string>
+    <string name="farhrenheit">Farhrenheit</string>
+    <string name="Notifications">Notifications</string>
+    <string name="enable">enable</string>
+    <string name="disable">disable</string>
+    <string name="date">date</string>
+    <string name="cloud">cloud</string>
+    <string name="humidity">humidity</string>
+    <string name="ultra_voilt">ultra voilt</string>
+    <string name="visibility">visibility</string>
+    <string name="pressure">pressure</string>
+    <string name="wind">wind</string>
+    <string name="add">add</string>
+    <string name="cancle">cancle</string>
+    <string name="set_your_location">set your location</string>
+    <string name="OK">ok</string>
+    <string name="please_set_your_loction">please set your loction</string>
+    <string name="go_to_setting">go to setting</string>
+    <string name="setting">setting</string>
+    <string name="favorite">favorite</string>
+    <string name="alerts">Alerts</string>
+    <string name="home">Home</string>
+    <string name="no_internet_connection">no internet connection</string>
+    <string name="hide">hide</string>
+    <string name="set_you_location">set you location</string>
+
+
+    <string-array name="alert_types">
+        <item>temperature</item>
+        <item>wind</item>
+        <item>visibility</item>
+        <item>humidity</item>
+        <item>pressure</item>
+    </string-array>
+</resources>

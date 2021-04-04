@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/main_fragment">
+
+    <fragment
+        android:id="@+id/main_fragment"
+        android:name="com.example.weather.main.view.MainFragment"
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/main_fragment_dest"
+            app:destination="@id/maps_fragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/maps_fragment"
+        android:name="com.example.weather.map.MapsFragment"
+        android:label="MapsFragment"
+        tools:layout="@layout/fragment_maps">
+        <argument
+            android:name="arg1"
+            app:argType="integer"
+            android:defaultValue="10"/>
+        <argument
+            android:name="arg2"
+            app:argType="integer"
+            android:defaultValue="20"/>
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.weather.fragments.favorite.view.FavoriteFragment"
+        android:label="FavoriteFragment" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_maps_fragment"
+            app:destination="@id/maps_fragment" />
+    </fragment>
+</navigation>
