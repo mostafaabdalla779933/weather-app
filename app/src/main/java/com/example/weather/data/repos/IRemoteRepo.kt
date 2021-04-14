@@ -1,9 +1,9 @@
-package com.example.weather.data.remote.retrofit
+package com.example.weather.data.repos
 
 import com.example.weather.model.DataResponse
 import retrofit2.Response
 
-interface WeatherRepoInterface {
+interface IRemoteRepo {
 
 
     suspend fun getWeatherFormApi(url :String): Response<DataResponse>

@@ -6,10 +6,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weather.MyApplication
-import com.example.weather.data.local.room.Roomdata
-import com.example.weather.data.local.sharedpref.Sharedprefer
-import com.example.weather.data.remote.retrofit.WeatherRepoInterface
-import com.example.weather.data.repos.LocalRepo
+import com.example.weather.data.repos.IRemoteRepo
+import com.example.weather.data.repos.ILocalRepo
 import com.example.weather.model.DataResponse
 import com.example.weather.model.Setting
 import com.example.weather.model.isOnline
@@ -19,59 +17,33 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class MainViewModel(var weatherRepoInterface: WeatherRepoInterface): ViewModel() {
+class MainViewModel(val remoteRepo: IRemoteRepo, val localRepo: ILocalRepo): ViewModel() {
 
     var TAG:String="main"
     var weatherLiveData= MutableLiveData<DataResponse>()
     var firstTimeLiveData=MutableLiveData<Boolean>()
-    val repo=LocalRepo
-    var loactionLiveData=MutableLiveData<Location>()
-    var LoadingLive= MutableLiveData<Boolean>()
     var erroLive= MutableLiveData<Boolean>()
-
-    var gotoHomeLiveData= MutableLiveData<Boolean>()
-
-    companion object{
-        var mainViewModel: MainViewModel? =null
-        fun getInstance(weatherRepoInterface: WeatherRepoInterface): MainViewModel? {
-            if(mainViewModel==null){
-                synchronized (MainViewModel::class.java){
-                    if(mainViewModel==null){
-                        mainViewModel=MainViewModel(weatherRepoInterface)
-                    }
-                }
-            }
-            return mainViewModel;
-        }
-    }
-
-
 
 
     // fetch data
 
     fun getWeather(){
-
-        val repoflag=repo.getRepo()
-
+        val repoflag=localRepo.getRepo()
         if(repoflag==null){
 
            firstTimeLiveData.postValue(true)
 
         }else if(repoflag==Setting.ROOM){
             //room
-            getWeatherFromRoom(repo.getTimeZone())
+            getWeatherFromRoom(localRepo.getTimeZone())
             Log.i(TAG, "room ")
 
         }else if(repoflag==Setting.RETROFIT){
 
             //retrofit
-
-            getWeatherFromRetrofit(repo.getLat().toString(),repo.getLng().toString())
-
+            getWeatherFromRetrofit(localRepo.getLat().toString(),localRepo.getLng().toString())
             Log.i(TAG, "retrofit ")
         }
-
     }
 
     //***************home Fragment*****************//
@@ -80,30 +52,25 @@ class MainViewModel(var weatherRepoInterface: WeatherRepoInterface): ViewModel()
 
     fun getWeatherFromRetrofit(lat:String, lon:String){
 
-        val lang=repo.getlanguge()
+        val lang=localRepo.getlanguge()
         CoroutineScope(Dispatchers.IO).launch {
 
             if (isOnline(MyApplication.getContext())) {
                 val response =
-                    weatherRepoInterface.getWeatherFormApi("data/2.5/onecall?lat=$lat&lon=$lon&exclude=alerts,minutely&lang=$lang&appid=4b296deb770fc941bfd35a28581dc8b7")
+                    remoteRepo.getWeatherFormApi("data/2.5/onecall?lat=$lat&lon=$lon&exclude=alerts,minutely&lang=$lang&appid=4b296deb770fc941bfd35a28581dc8b7")
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-
-                        repo.putTimeZone(response.body()?.timezone!!)
+                        localRepo.putTimeZone(response.body()?.timezone!!)
                         response.body()?.time = System.currentTimeMillis()
                         setWeatherInRoom(response.body()!!)
                         weatherLiveData.postValue(response.body())
-
                     } else {
                         erroLive.postValue(true)
                     }
                 }
-
             }else{
-
                 erroLive.postValue(true)
-
             }
         }
     }
@@ -111,9 +78,8 @@ class MainViewModel(var weatherRepoInterface: WeatherRepoInterface): ViewModel()
     ///set weather in room
     fun setWeatherInRoom(response: DataResponse){
         CoroutineScope(Dispatchers.IO).launch {
-
-           repo.addWeather(response)
-            repo.putRepo(Setting.ROOM)
+           localRepo.addWeather(response)
+           localRepo.putRepo(Setting.ROOM)
         }
 
     }
@@ -123,70 +89,48 @@ class MainViewModel(var weatherRepoInterface: WeatherRepoInterface): ViewModel()
 
         CoroutineScope(Dispatchers.IO).launch {
 
-
-
-            val response=repo.getWeatherByTimeZone(timezone)
+            val response=localRepo.getWeatherByTimeZone(timezone)
 
             if (response.time-System.currentTimeMillis()>86400000){
-
-
-                repo.putRepo(Setting.RETROFIT)
+                localRepo.putRepo(Setting.RETROFIT)
                 getWeather()
-
             }else{
-
                 withContext(Dispatchers.Main){
                     weatherLiveData.postValue(response)
                 }
-
             }
         }
     }
 
-
-
-
-
     ///**********************shared******************///
 
     fun setLocation(location: Location){
-        repo.putLat(location.latitude.toFloat())
-        repo.putLng(location.longitude.toFloat())
-        repo.putRepo(Setting.RETROFIT)
+        localRepo.putLat(location.latitude.toFloat())
+        localRepo.putLng(location.longitude.toFloat())
+        localRepo.putRepo(Setting.RETROFIT)
         getWeather()
     }
 
     fun setLocationFromMap(lat: Float,lon: Float){
-        repo.putLat(lat)
-        repo.putLng(lon)
-        repo.putRepo(Setting.RETROFIT)
-
-        Log.i(TAG, "setLocationFromMap: "+Sharedprefer.toString())
+        localRepo.putLat(lat)
+        localRepo.putLng(lon)
+        localRepo.putRepo(Setting.RETROFIT)
         getWeather()
     }
 
-
     fun getTemperUnit():String{
-
-        return repo.getTemperUnit()
+        return localRepo.getTemperUnit()
     }
 
     fun getWindSpeed():String{
-
-       return repo.getWindSpeed()
-   }
-
-
+       return localRepo.getWindSpeed()
+    }
 
     fun errorComplete(){
         erroLive.postValue(false)
     }
 
-
     fun firstComplete(){
-
         firstTimeLiveData.postValue(false)
-
     }
-
 }

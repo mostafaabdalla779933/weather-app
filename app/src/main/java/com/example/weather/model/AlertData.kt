@@ -15,8 +15,6 @@ data class AlertData(
         var calendar: Calendar
 ){
 
-
-
     companion object{
 
         const val TAG="Alert"

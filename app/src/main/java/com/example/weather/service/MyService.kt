@@ -14,8 +14,7 @@ import com.example.weather.R
 import com.example.weather.dialogalert.DialogActivity
 import com.example.weather.data.local.room.Roomdata
 import com.example.weather.data.local.sharedpref.Sharedprefer
-import com.example.weather.data.remote.retrofit.WeatherRepo
-import com.example.weather.fragments.alerts.viewmodel.AlertViewModel
+import com.example.weather.data.repos.RemoteRepo
 import com.example.weather.main.view.MainActivity
 import com.example.weather.model.AlertData
 import com.example.weather.model.AlertsItem
@@ -38,8 +37,8 @@ class MyService : JobIntentService() {
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
         super.onStartCommand(intent, flags, startId)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             raiseNotification()
         }
@@ -52,8 +51,7 @@ class MyService : JobIntentService() {
 
                 Roomdata.getDatabase(MyApplication.getContext()).roomDao().deleteAlert(alertData)
 
-                var response = WeatherRepo.getInstance()
-                    ?.getWeatherFormApi("data/2.5/onecall?lat=${Sharedprefer.getLat()}&lon=${Sharedprefer.getLng()}&exclude=daily,current,hourly,minutely&lang=en&appid=4b296deb770fc941bfd35a28581dc8b7")
+                var response = RemoteRepo?.getWeatherFormApi("data/2.5/onecall?lat=${Sharedprefer.getLat()}&lon=${Sharedprefer.getLng()}&exclude=daily,current,hourly,minutely&lang=en&appid=4b296deb770fc941bfd35a28581dc8b7")
 
 
                 if (response!!.isSuccessful) {

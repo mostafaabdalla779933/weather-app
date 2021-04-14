@@ -1,6 +1,6 @@
 package com.example.weather.data.local.sharedpref
 
-import com.example.weather.data.remote.retrofit.WeatherRepo
+import com.example.weather.data.repos.RemoteRepo
 
 class Repo {
 
@@ -16,7 +16,7 @@ class Repo {
 
         fun getInstance(): Repo? {
             if(repo ==null){
-                synchronized (WeatherRepo::class.java){
+                synchronized (RemoteRepo::class.java){
                     if(repo ==null){
                         repo = Repo()
                     }

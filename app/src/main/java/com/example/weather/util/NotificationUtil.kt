@@ -43,7 +43,6 @@ class NotificationUtil(var alertsItem: AlertsItem):ContextWrapper(MyApplication.
 
     }
 
-
         private var mManager: NotificationManager?=null
 
         @RequiresApi(api = Build.VERSION_CODES.O)

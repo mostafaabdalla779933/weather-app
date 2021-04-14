@@ -1,4 +1,4 @@
-package com.example.weather.reciver
+ package com.example.weather.reciver
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -14,10 +14,6 @@ import com.example.weather.util.NotificationUtil
 class MyReceiver : BroadcastReceiver() {
 
     val TAG="main"
-    lateinit var notificationHelper:NotificationUtil
-
-
-    lateinit var repo:ISharedprefer
 
     override fun onReceive(context: Context, intent: Intent) {
 
@@ -27,17 +23,10 @@ class MyReceiver : BroadcastReceiver() {
         when(intent.action){
 
             AlertData.TAG->{
-
                 var json:String=intent.getStringExtra(AlertData.TAG)!!
-
-                Log.i(TAG, "onReceive: ")
-
                 val intent = Intent(context, MyService::class.java)
-
                 intent.putExtra(AlertData.TAG,json)
-
                 if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O) {
-
                     context.startForegroundService(intent);
                 }else{
                    context.startService(intent);

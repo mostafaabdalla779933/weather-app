@@ -2,21 +2,18 @@ package com.example.weather.model
 
 import android.location.Location
 
-public enum class Period{
+enum class Period{
     daily,hourly,minutely,alerts,current,
 }
 
-public class periodSetting{
-
+class periodSetting{
     companion object{
-
         val FAVOURITE="minutely"
         val CURRENT="daily,hourly,minutely,alerts"
-
     }
 }
 
-public class Setting(var lang:String,var notification:Boolean,var temperUnit:String,var windSpeed:String,var location:Location?=null){
+class Setting(var lang:String,var notification:Boolean,var temperUnit:String,var windSpeed:String,var location:Location?=null){
 
     companion object{
         val LANGUADE="language"
@@ -41,14 +38,14 @@ public class Setting(var lang:String,var notification:Boolean,var temperUnit:Str
 
 }
 
-public class Language {
+class Language {
     companion object{
         val ARABIC="ar"
         val ENGLISH="en"
     }
 }
 
-public class WindSpeed{
+class WindSpeed{
 
     companion object{
         val MPERSEC="mpersec"
@@ -59,7 +56,7 @@ public class WindSpeed{
 }
 
 
-public class TemperUnit{
+class TemperUnit{
 
     companion object{
         val FAHRENHEIT="Fahrenheit"
@@ -69,7 +66,7 @@ public class TemperUnit{
 
 }
 
-public class UnitApi{
+class UnitApi{
 
     companion object{
         val STANDARD="standard"

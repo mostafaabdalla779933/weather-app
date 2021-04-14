@@ -4,42 +4,35 @@ import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
-import android.location.Location
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weather.data.local.sharedpref.Sharedprefer
-import com.example.weather.data.remote.location.LocationRepoInterface
+import com.example.weather.data.repos.ILocalRepo
+import com.example.weather.data.repos.ILocationRepo
 import com.example.weather.data.repos.LocalRepo
 import com.example.weather.model.Setting
 import java.util.*
 
 
-class SettingViewModel(var locationRepoInterface: LocationRepoInterface): ViewModel(){
+class SettingViewModel(val locationRepoInterface: ILocationRepo,val repo:ILocalRepo): ViewModel(){
     val TAG="main"
 
-    val repo=LocalRepo
-
-    fun getLocation(){
-
-        locationRepoInterface.getLoction()
-    }
 
 
-    fun setLocale(lang:String,contect:Context,activity:Activity) {
-        val resources: Resources = contect.getResources()
+    fun getLocation()=locationRepoInterface.getLoction()
+
+
+    fun setLocale(lang:String, context:Context, activity:Activity) {
+        val resources: Resources = context.resources
         val locale = Locale(lang)
         Locale.setDefault(locale);
         val config = Configuration()
         config.locale = locale
-        resources.updateConfiguration(config, resources.getDisplayMetrics());
-        activity?.finish()
-        activity?.startActivity(activity?.getIntent())
+        resources.updateConfiguration(config, resources.displayMetrics);
+        activity.finish()
+        activity.startActivity(activity.intent)
         Sharedprefer.putRepo(Setting.RETROFIT)
         //(activity as MainActivity).recreate()
     }
-
-
-
     fun putlanguge(language: String){
 
         repo.putlanguge(language)
@@ -80,7 +73,7 @@ class SettingViewModel(var locationRepoInterface: LocationRepoInterface): ViewMo
     }
 
 
-    fun getLat():Float{
+  /*  fun getLat():Float{
 
         return repo.getLat()
     }
@@ -135,6 +128,6 @@ class SettingViewModel(var locationRepoInterface: LocationRepoInterface): ViewMo
     fun getSwitch():Boolean{
 
         return repo.getSwitch()
-    }
+    }*/
 
 }

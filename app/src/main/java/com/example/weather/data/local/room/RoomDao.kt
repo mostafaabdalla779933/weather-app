@@ -1,5 +1,6 @@
 package com.example.weather.data.local.room
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.weather.model.AlertData
 import com.example.weather.model.DataResponse
@@ -44,7 +45,7 @@ interface RoomDao {
 
 
         @Query("SELECT * FROM favorite")
-        suspend fun getAllFavourite():List<Favourite>
+        fun getAllFavourite():LiveData<List<Favourite>>
 
         @Update
         suspend fun updateFavourite(fav: Favourite)
@@ -59,7 +60,7 @@ interface RoomDao {
 
 
         @Query("SELECT * FROM alertdata")
-        suspend fun getAllAlerts():List<AlertData>
+        fun getAllAlerts():LiveData<List<AlertData>>
 
 
 }

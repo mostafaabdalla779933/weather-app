@@ -6,5 +6,6 @@ interface OnClickAlert {
 
 
     fun onDeletAlert(alertData: AlertData)
+    fun onAddAlert(alertData: AlertData)
 
 }

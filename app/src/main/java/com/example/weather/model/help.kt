@@ -20,6 +20,10 @@ fun Int.toCelsius()=this-273
 
 fun Int.toFahrenheit()=(9*(this-273)/3 +32)
 
+const  val KEY = "4b296deb770fc941bfd35a28581dc8b7"
+
+
+
 
 fun isOnline(context: Context): Boolean {
     val connectivityManager =

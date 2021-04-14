@@ -16,28 +16,19 @@ class MapActivity : AppCompatActivity() {
     val TAG="main"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding=ActivityMapBinding.inflate(layoutInflater)
+        binding = ActivityMapBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        var bundle=Bundle()
-        Log.i(TAG, "onCreate: "+intent.getStringExtra("from"))
+        var bundle = Bundle()
 
-        when(intent.getStringExtra("from")){
+        when (intent.getStringExtra("from")) {
 
-            SettingFragment.Tag->bundle.putString("from",SettingFragment.Tag)
-
-            FavoriteFragment.Tag->bundle.putString("from",FavoriteFragment.Tag)
+            SettingFragment.Tag -> bundle.putString("from", SettingFragment.Tag)
+            FavoriteFragment.Tag -> bundle.putString("from", FavoriteFragment.Tag)
 
         }
-
-        setContentView(binding.root)
-        setContentView(binding.root)
-
-        val fragment:Fragment=MapsFragment()
-        fragment.arguments= bundle
-
+        val fragment = MapsFragment()
+        fragment.arguments = bundle
         supportFragmentManager.beginTransaction().add(R.id.mapcontainer, fragment).commit()
-
     }
-
-
 }

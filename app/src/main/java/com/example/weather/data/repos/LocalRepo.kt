@@ -1,37 +1,39 @@
 package com.example.weather.data.repos
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.weather.MyApplication
 import com.example.weather.data.local.room.Roomdata
+import com.example.weather.data.local.sharedpref.ISharedprefer
 import com.example.weather.data.local.sharedpref.Sharedprefer
 import com.example.weather.model.AlertData
 import com.example.weather.model.DataResponse
 import com.example.weather.model.Favourite
 import kotlin.math.ln
 
-object LocalRepo{
+object LocalRepo : ILocalRepo {
 
-    val shared=Sharedprefer
-
+    ///******Data Sources
+    val shared: ISharedprefer =Sharedprefer
     val room=Roomdata.getDatabase(MyApplication.getContext()).roomDao()
 
 
 
 
 
-    suspend fun addWeather(response: DataResponse){
+    override suspend fun addWeather(response: DataResponse){
 
         room.insert(response)
     }
 
 
-    suspend fun deleteAllWeather(){
+    override suspend fun deleteAllWeather(){
 
         room.deleteAll()
     }
 
 
-    suspend fun getWeatherByTimeZone(timezone: String):DataResponse{
+    override suspend fun getWeatherByTimeZone(timezone: String):DataResponse{
 
        return room.getWeatherByTimeZone(timezone)
     }
@@ -42,19 +44,24 @@ object LocalRepo{
     ///****** favourite table *********//
 
 
-    suspend fun addFavourite(fav: Favourite){
+    override suspend fun addFavourite(fav: Favourite){
 
         room.addFavourite(fav)
     }
 
-    suspend fun deleteFavourite(fav: Favourite){
+    override suspend fun deleteFavourite(fav: Favourite){
 
         room.deleteFavourite(fav)
     }
 
+    override suspend fun updateFavourite(fav: Favourite){
+
+        room.updateFavourite(fav)
+    }
 
 
-    suspend fun getAllFavourite():List<Favourite>{
+
+    override suspend fun getAllFavourite():LiveData<List<Favourite>>{
 
         return room.getAllFavourite()
     }
@@ -64,18 +71,18 @@ object LocalRepo{
 
     //**********alerts************//
 
-    suspend fun addAlert(alert: AlertData){
+    override suspend fun addAlert(alert: AlertData){
 
         room.addAlert(alert)
     }
 
-    suspend fun deleteAlert(alert: AlertData){
+    override suspend fun deleteAlert(alert: AlertData){
 
         room.deleteAlert(alert)
     }
 
 
-    suspend fun getAllAlerts():List<AlertData>{
+    override suspend fun getAllAlerts(): LiveData<List<AlertData>> {
 
        return room.getAllAlerts()
     }
@@ -84,100 +91,99 @@ object LocalRepo{
 
     //****************************shared**********************//
 
-    fun putlanguge(language: String){
+    override fun putlanguge(language: String){
 
-        Sharedprefer.putlanguge(language)
+        shared.putlanguge(language)
     }
 
-    fun getlanguge(): String{
+    override fun getlanguge(): String{
 
-        return Sharedprefer.getlanguge()
+        return shared.getlanguge()
     }
 
-    fun putNotification(notificationFlag: Boolean){
+    override fun putNotification(notificationFlag: Boolean){
 
-        Sharedprefer.putNotification(notificationFlag)
+        shared.putNotification(notificationFlag)
     }
 
-    fun getNotification(): Boolean{
+    override fun getNotification(): Boolean{
 
-        return Sharedprefer.getNotification()
-    }
-
-
-    fun putTemperUnit(temperUnit: String){
-
-        Sharedprefer.putTemperUnit(temperUnit)
-    }
-    fun getTemperUnit(): String{
-
-        return Sharedprefer.getTemperUnit()
-    }
-    fun putWindSpeed(WindSpeed: String){
-
-        Sharedprefer.putWindSpeed(WindSpeed)
-    }
-
-    fun getWindSpeed(): String{
-
-        return Sharedprefer.getWindSpeed()
+        return shared.getNotification()
     }
 
 
-    fun getLat():Float{
+    override fun putTemperUnit(temperUnit: String){
 
-        return Sharedprefer.getLat()
+        shared.putTemperUnit(temperUnit)
     }
-    fun putLat(lat:Float){
+    override fun getTemperUnit(): String{
 
-        Sharedprefer.putLat(lat)
+        return shared.getTemperUnit()
     }
-    fun getLng():Float{
+    override fun putWindSpeed(WindSpeed: String){
 
-        return Sharedprefer.getLng()
-    }
-
-    fun putLng(lng:Float){
-
-        Sharedprefer.putLng(lng)
+        shared.putWindSpeed(WindSpeed)
     }
 
-    fun putTimeZone(timeZone:String){
+    override fun getWindSpeed(): String{
 
-        Sharedprefer.putTimeZone(timeZone)
-    }
-    fun getTimeZone():String{
-
-        return Sharedprefer.getTimeZone()
+        return shared.getWindSpeed()
     }
 
 
-    fun putRepo(repo:String){
+    override fun getLat():Float{
 
-        Sharedprefer.putRepo(repo)
+        return shared.getLat()
+    }
+    override fun putLat(lat:Float){
+
+        shared.putLat(lat)
+    }
+    override fun getLng():Float{
+
+        return shared.getLng()
     }
 
-    fun getRepo():String?{
+    override fun putLng(lng:Float){
 
-      return Sharedprefer.getRepo()
+        shared.putLng(lng)
+    }
+
+    override fun putTimeZone(timeZone:String){
+
+        shared.putTimeZone(timeZone)
+    }
+    override fun getTimeZone():String{
+
+        return shared.getTimeZone()
     }
 
 
-    fun putRepeating(day:Int){
+    override fun putRepo(repo:String){
 
-        Sharedprefer.putRepeating(day)
-    }
-    fun getRepeating():Int?{
-
-       return Sharedprefer.getRepeating()
+        shared.putRepo(repo)
     }
 
-    fun putSwitch(flag:Boolean){
+    override fun getRepo():String?{
 
-        Sharedprefer.putSwitch(flag)
+      return shared.getRepo()
     }
-    fun getSwitch():Boolean{
 
-        return Sharedprefer.getSwitch()
+
+    override fun putRepeating(day:Int){
+        shared.putRepeating(day)
+    }
+    override fun getRepeating():Int?{
+
+       return shared.getRepeating()
+    }
+
+    override fun putSwitch(flag:Boolean){
+
+        shared.putSwitch(flag)
+    }
+    override fun getSwitch():Boolean{
+
+        return shared.getSwitch()
     }
 }

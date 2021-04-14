@@ -3,8 +3,6 @@ package com.example.weather.fragments.setting.view
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Configuration
-import android.content.res.Resources
 
 
 import android.location.Location
@@ -17,12 +15,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
-import com.example.weather.data.local.sharedpref.Sharedprefer
 import com.example.weather.databinding.FragmentSettingBinding
 import com.example.weather.data.remote.location.GetLocation
 import com.example.weather.data.remote.location.LocationHelper
-import com.example.weather.data.remote.location.LocationRepo
-import com.example.weather.data.remote.retrofit.WeatherRepo
+import com.example.weather.data.repos.LocalRepo
+import com.example.weather.data.repos.LocationRepo
+import com.example.weather.data.repos.RemoteRepo
 import com.example.weather.fragments.setting.viewmodel.SettingViewModel
 import com.example.weather.fragments.setting.viewmodel.SettingViewModelFactory
 import com.example.weather.main.viewmodel.MainViewModel
@@ -31,13 +29,11 @@ import com.example.weather.map.MapActivity
 import com.example.weather.model.Language
 import com.example.weather.model.TemperUnit
 import com.example.weather.model.WindSpeed
-import java.util.*
 
 
 class SettingFragment : Fragment(), GetLocation {
 
     val TAG="main"
-
     lateinit var binding: FragmentSettingBinding
     lateinit var  settingViewModel: SettingViewModel
     lateinit var mainViewModel: MainViewModel
@@ -46,9 +42,9 @@ class SettingFragment : Fragment(), GetLocation {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= FragmentSettingBinding.inflate(layoutInflater)
-
-        mainViewModel= ViewModelProvider(this,MainViewModelFactory(WeatherRepo.getInstance()!!)).get(MainViewModel::class.java)
-        settingViewModel= ViewModelProvider(this,SettingViewModelFactory(LocationRepo(requireActivity(),this))).get(SettingViewModel::class.java)
+        mainViewModel= ViewModelProvider(requireActivity(),MainViewModelFactory(RemoteRepo,LocalRepo)).get(MainViewModel::class.java)
+        settingViewModel= ViewModelProvider(this,SettingViewModelFactory(LocationRepo(requireActivity(), this),LocalRepo)).get(SettingViewModel::class.java)
+        Log.i(TAG, "onCreate: "+mainViewModel.toString())
     }
 
 
@@ -121,15 +117,6 @@ class SettingFragment : Fragment(), GetLocation {
         })
         //*****************************************************************************//
 
-
-
-        mainViewModel.gotoHomeLiveData.observe(viewLifecycleOwner, Observer {
-
-            if (it){
-                mainViewModel.gotoHomeLiveData.postValue(false)
-                pager.currentItem=0
-            }
-        })
 
        return binding.root
     }

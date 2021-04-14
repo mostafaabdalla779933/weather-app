@@ -9,11 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.weather.data.repos.LocalRepo
+import com.example.weather.data.repos.RemoteRepo
 import com.example.weather.databinding.FragmentFavoriteBinding
 import com.example.weather.fragments.favorite.viewmodel.FavouriteViewModel
 import com.example.weather.fragments.favorite.viewmodel.FavouriteViewModelFactory
 import com.example.weather.map.MapActivity
 import com.example.weather.model.Favourite
+
 
 class FavoriteFragment : Fragment(), OnClickFav {
 
@@ -25,17 +28,14 @@ class FavoriteFragment : Fragment(), OnClickFav {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=FragmentFavoriteBinding.inflate(layoutInflater)
+        viewModelTest=ViewModelProvider(this,FavouriteViewModelFactory(LocalRepo,RemoteRepo)).get(FavouriteViewModel::class.java)
 
-        viewModelTest=ViewModelProvider(this,FavouriteViewModelFactory()).get(FavouriteViewModel::class.java)
 
         viewModelTest.getFvaouritesRoom(requireContext())
-
         favoriteAdapter = FavouriteAdapter(mutableListOf(),this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
-
 
         viewModelTest.favouriteLiveData.observe(viewLifecycleOwner, Observer {
 
@@ -48,6 +48,9 @@ class FavoriteFragment : Fragment(), OnClickFav {
             layoutManager= LinearLayoutManager(activity)
             adapter=favoriteAdapter
         }
+
+
+
         return binding.root
     }
 

@@ -2,10 +2,14 @@ package com.example.weather.fragments.alerts.viewmodel
 
 
 import android.util.Log
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.example.weather.MyApplication
 import com.example.weather.data.local.room.Roomdata
+import com.example.weather.data.repos.ILocalRepo
+import com.example.weather.data.repos.LocalRepo
 import com.example.weather.main.viewmodel.MainViewModel
 import com.example.weather.model.AlertData
 import com.example.weather.util.AlarmUtil
@@ -14,43 +18,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
-class AlertViewModel(): ViewModel() {
+class AlertViewModel(val repo:ILocalRepo): ViewModel() {
 
-
-
-    var alertsLiveData=MutableLiveData<MutableList<AlertData>>()
-
+    var alertsLiveData=MediatorLiveData<MutableList<AlertData>>()
+   // var sourceLiveData=MediatorLiveData<MutableList<AlertData>>()
     val TAG="main"
-    var alarmUtil:AlarmUtil
-
-    init {
-
-        alarmUtil=AlarmUtil
-
-    }
-
+    var alarmUtil=AlarmUtil
 
     companion object{
-
-
-       private var viewModel: AlertViewModel? =null
-
-        fun getInstance(): AlertViewModel? {
-            if(viewModel==null){
-                synchronized (MainViewModel::class.java){
-                    if(viewModel==null){
-                        viewModel= AlertViewModel()
-                    }
-                }
-            }
-            return viewModel;
-        }
-    }
-
-
-    fun fromViewModel(){
-
-        Log.i(TAG, "fromViewModel: ")
 
     }
 
@@ -58,21 +33,19 @@ class AlertViewModel(): ViewModel() {
 
         CoroutineScope(Dispatchers.IO).launch {
 
-           alertsLiveData.postValue( Roomdata.getDatabase(MyApplication.getContext()).roomDao().getAllAlerts().toMutableList())
+            alertsLiveData.addSource( repo.getAllAlerts(), Observer {
+                alertsLiveData.postValue( it.toMutableList())
+            })
         }
-
-
-
     }
-
-
-    //
 
     fun addAlarm(alertData: AlertData){
 
         alarmUtil.addAlarm(alertData)
 
-        setAlerttoRoom(alertData)
+        CoroutineScope(Dispatchers.IO).launch {
+            repo.addAlert(alertData)
+        }
 
         val list=alertsLiveData.value
         list?.add(alertData)
@@ -83,30 +56,15 @@ class AlertViewModel(): ViewModel() {
     fun cancleAlarm(alertData: AlertData){
 
         alarmUtil.cancelAlarm(alertData)
-        deleteAlertFromRoom(alertData)
+        CoroutineScope(Dispatchers.IO).launch {
+
+            repo.deleteAlert(alertData)
+        }
         val list=alertsLiveData.value
         list?.remove(alertData)
         alertsLiveData.postValue(list!!)
 
     }
-
-
-    fun setAlerttoRoom(alertData: AlertData){
-
-        CoroutineScope(Dispatchers.IO).launch {
-
-            Roomdata.getDatabase(MyApplication.getContext()).roomDao().addAlert(alertData)
-        }
-    }
-
-
-    fun deleteAlertFromRoom(alertData: AlertData){
-        CoroutineScope(Dispatchers.IO).launch {
-
-            Roomdata.getDatabase(MyApplication.getContext()).roomDao().deleteAlert(alertData)
-        }
-    }
-
 
     fun addRepeatingAlarm(days:Int){
         alarmUtil.addRepeatingAlarm(days)

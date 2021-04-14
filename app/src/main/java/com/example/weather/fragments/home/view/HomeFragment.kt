@@ -1,7 +1,5 @@
 package com.example.weather.fragments.home.view
 
-import android.location.Address
-import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.example.weather.R
-import com.example.weather.data.local.sharedpref.Sharedprefer
-import com.example.weather.data.remote.retrofit.WeatherRepo
+import com.example.weather.data.repos.LocalRepo
+import com.example.weather.data.repos.RemoteRepo
 import com.example.weather.databinding.FragmentHomeBinding
 import com.example.weather.main.viewmodel.MainViewModel
 import com.example.weather.main.viewmodel.MainViewModelFactory
@@ -32,7 +30,6 @@ class HomeFragment : Fragment() {
     lateinit var dailyAdapter: DailyAdapter
     lateinit var hourlyAdapter: HourlyAdapter
     lateinit var pager: ViewPager
-    lateinit var timeZone: String
     lateinit var unitTemp:String
     lateinit var unitWind:String
 
@@ -40,9 +37,8 @@ class HomeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        viewModel = ViewModelProvider(this,MainViewModelFactory(WeatherRepo.getInstance()!!)).get(MainViewModel::class.java)
-
-
+        viewModel = ViewModelProvider(requireActivity(),MainViewModelFactory(RemoteRepo,LocalRepo)).get(MainViewModel::class.java)
+        Log.i(TAG, "onCreate: "+viewModel.toString())
 
         unitTemp=viewModel.getTemperUnit()
         unitWind=viewModel.getWindSpeed()
@@ -88,9 +84,8 @@ class HomeFragment : Fragment() {
         }
 
 
-        ///set weather
+        ///show weather
         viewModel.weatherLiveData.observe(viewLifecycleOwner, Observer {
-
 
             binding.progressBar.visibility=View.INVISIBLE
             applyDatatoScreen(it)
@@ -98,16 +93,12 @@ class HomeFragment : Fragment() {
 
         viewModel.erroLive.observe(viewLifecycleOwner, Observer {
 
-
             if (it){
                 Snackbar.make(this.requireView(), getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE )
                     .setAction(getString(R.string.hide)) { }.show()
                 binding.progressBar.visibility=View.INVISIBLE
-
                 viewModel.errorComplete()
             }
-
-
         })
 
         return binding.root
@@ -133,7 +124,6 @@ class HomeFragment : Fragment() {
                 WindSpeed.MPERSEC->wind.text= it?.current?.windSpeed?.toString()+"m/sec"
                 WindSpeed.MPERHOUR->wind.text=String.format("%.1f", (it?.current?.windSpeed!! * 2.23)) + "mile/h"
             }
-
             humidity.text=it?.current?.humidity?.toString()
             when(unitTemp){
                 TemperUnit.KELVIN->temp.text=""+(it?.current?.temp?.toInt())+"°K"
@@ -142,14 +132,10 @@ class HomeFragment : Fragment() {
             }
             txtdescription.text=it?.current?.weather?.get(0)?.description
         }
-
         dailyAdapter.list=it.daily?.drop(1)?.take(7)?.toMutableList()!!
         dailyAdapter.notifyDataSetChanged()
         hourlyAdapter.list=it.hourly?.take(24)?.toMutableList()!!
         hourlyAdapter.notifyDataSetChanged()
-
         Glide.with(requireActivity().applicationContext).load(downloadIcon(it?.current?.weather?.get(0)?.icon)).into(binding.imageicon)
-
-
     }
 }

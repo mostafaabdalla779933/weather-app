@@ -1,19 +1,16 @@
 package com.example.weather.fragments.alerts.view
 
-import android.content.Intent
+
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
-import android.widget.RadioGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.weather.data.local.sharedpref.Sharedprefer
+import com.example.weather.data.repos.LocalRepo
 import com.example.weather.databinding.FragmentAlertsBinding
 import com.example.weather.fragments.alerts.viewmodel.AlertViewModel
 import com.example.weather.fragments.alerts.viewmodel.AlertViewModelFactory
@@ -26,17 +23,13 @@ class AlertsFragment :Fragment(),OnClickAlert {
     val TAG="main"
 
     lateinit var alertAdapter:AlertAdapter
-
     lateinit var viewMode: AlertViewModel
-
 
     lateinit var binding: FragmentAlertsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= FragmentAlertsBinding.inflate(layoutInflater)
-        viewMode= ViewModelProvider(this, AlertViewModelFactory()).get(AlertViewModel::class.java)
-
-
+        viewMode= ViewModelProvider(this, AlertViewModelFactory(LocalRepo)).get(AlertViewModel::class.java)
 
        // defaultSetting()
 
@@ -58,9 +51,6 @@ class AlertsFragment :Fragment(),OnClickAlert {
             binding.switch1.isChecked=false
 
         }
-
-
-
 
         when(Sharedprefer.getRepeating()){
             1->binding.alarm24.isChecked=true
@@ -118,28 +108,27 @@ class AlertsFragment :Fragment(),OnClickAlert {
         viewMode.alertsLiveData.observe(viewLifecycleOwner, Observer {
             alertAdapter.list=it
             alertAdapter.notifyDataSetChanged()
-
         })
 
         binding.Alertrecycl.apply {
             layoutManager= LinearLayoutManager(activity)
             adapter=alertAdapter
         }
-
         binding.floatingActionButton.setOnClickListener(View.OnClickListener {
-            requireActivity().startActivity(Intent(activity, AddAlertActivity::class.java))
+            AddAlertDF(this).show(parentFragmentManager,"details")
         })
-
         return binding.root
     }
-
     companion object {
-
-
     }
 
     override fun onDeletAlert(alertData: AlertData) {
-
         viewMode.cancleAlarm(alertData)
+    }
+
+    override fun onAddAlert(alertData: AlertData) {
+
+        viewMode.addAlarm(alertData)
+
     }
 }

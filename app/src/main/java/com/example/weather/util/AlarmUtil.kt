@@ -13,35 +13,24 @@ import com.google.gson.Gson
 import java.util.*
 
 object AlarmUtil {
-
-
-
     var TAG="main";
 
-        const val REPEAT_TAG="Repeating"
+    const val REPEAT_TAG="Repeating"
 
     lateinit var intent: Intent
     var alarmManager: AlarmManager=MyApplication.getContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
     lateinit var pendingIntent: PendingIntent
 
 
-
-
-
      fun addAlarm(alertData: AlertData){
-
-
 
         intent=Intent(MyApplication.getContext(), MyReceiver::class.java)
 
         intent.action=AlertData.TAG
         intent.putExtra(AlertData.TAG, Gson().toJson(alertData))
 
-         Log.i(TAG, "addAlarm: "+alertData.hashCode())
-
+        Log.i(TAG, "addAlarm: "+alertData.hashCode())
         pendingIntent= PendingIntent.getBroadcast(MyApplication.getContext(),alertData.hashCode(),intent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-
 
          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
@@ -58,11 +47,7 @@ object AlarmUtil {
 
     fun cancelAlarm(alertData: AlertData){
 
-
         intent=Intent(MyApplication.getContext(),  MyReceiver::class.java)
-
-
-
         Log.i(TAG, "cancelAlarm: ")
         pendingIntent= PendingIntent.getBroadcast(MyApplication.getContext(),alertData.hashCode(),intent,PendingIntent.FLAG_UPDATE_CURRENT)
         alarmManager.cancel(pendingIntent)
@@ -87,15 +72,7 @@ object AlarmUtil {
             //set(Calendar.HOUR_OF_DAY, 14)
         }
 
-
-
-        //alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, 1000, pendingIntent)
-
-        //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis, 1000, pendingIntent)
         alarmManager.setInexactRepeating (AlarmManager.RTC_WAKEUP, calendar.timeInMillis, AlarmManager.INTERVAL_DAY*days, pendingIntent)
-
-
-
     }
 
 
@@ -106,8 +83,6 @@ object AlarmUtil {
         alarmManager=MyApplication.getContext().getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         pendingIntent= PendingIntent.getBroadcast(MyApplication.getContext(),44,intent,PendingIntent.FLAG_CANCEL_CURRENT);
-
-
         alarmManager.cancel(pendingIntent)
     }
 

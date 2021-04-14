@@ -2,7 +2,6 @@ package com.example.weather.map
 
 import android.location.Address
 import android.location.Geocoder
-import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -11,10 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import com.example.weather.MyApplication
 import com.example.weather.R
-import com.example.weather.data.remote.retrofit.WeatherRepo
+import com.example.weather.data.repos.LocalRepo
+import com.example.weather.data.repos.RemoteRepo
 import com.example.weather.databinding.FragmentMapsBinding
 import com.example.weather.databinding.SnackbarBinding
 import com.example.weather.fragments.favorite.view.FavoriteFragment
@@ -83,9 +82,9 @@ class MapsFragment : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        viewModel = ViewModelProvider(this,MainViewModelFactory(WeatherRepo.getInstance()!!)).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this,MainViewModelFactory(RemoteRepo,LocalRepo)).get(MainViewModel::class.java)
 
-        viewModelTest=ViewModelProvider(this,FavouriteViewModelFactory()).get(FavouriteViewModel::class.java)
+        viewModelTest=ViewModelProvider(this,FavouriteViewModelFactory(LocalRepo,RemoteRepo)).get(FavouriteViewModel::class.java)
         binding= FragmentMapsBinding.inflate(layoutInflater)
 
         return binding.root
@@ -102,9 +101,6 @@ class MapsFragment : Fragment(){
                 googleMap!!.setOnMapClickListener(object :GoogleMap.OnMapClickListener{
                     override fun onMapClick(latLng: LatLng?) {
 
-
-
-
                         if(isOnline(MyApplication.getContext())) {
 
                             var marker: MarkerOptions = MarkerOptions()
@@ -120,9 +116,7 @@ class MapsFragment : Fragment(){
 
                             googleMap.addMarker(marker)
 
-
                         }
-
                     }
                 })
             }
