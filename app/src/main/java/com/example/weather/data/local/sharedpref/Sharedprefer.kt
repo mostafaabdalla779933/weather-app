@@ -9,10 +9,10 @@ import com.example.weather.model.TemperUnit
 import com.example.weather.model.WindSpeed
 
 
-object Sharedprefer : ISharedprefer {
+class Sharedprefer(val sharedPreferences:SharedPreferences,val editor: SharedPreferences.Editor) : ISharedprefer {
 
-    private val sharedPreferences: SharedPreferences= MyApplication.getContext() .getSharedPreferences("weather", Context.MODE_MULTI_PROCESS)
-    private val editor: SharedPreferences.Editor=sharedPreferences.edit()
+   // private val sharedPreferences: SharedPreferences= MyApplication.getContext() .getSharedPreferences("weather", Context.MODE_MULTI_PROCESS)
+  // private val editor: SharedPreferences.Editor=sharedPreferences.edit()
     var TAG="main"
 
 

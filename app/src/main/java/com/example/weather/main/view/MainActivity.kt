@@ -2,28 +2,34 @@ package com.example.weather.main.view
 
 import android.content.ComponentName
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.NavController
-import androidx.navigation.NavDestination
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment
-import com.example.weather.R
+import com.example.weather.MyApplication
 import com.example.weather.databinding.ActivityMainBinding
+import com.example.weather.di.ActivityComponent
+import com.example.weather.di.DaggerActivityComponent
+import java.util.*
+
 
 class  MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     val TAG="main"
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+       setLocale((application as MyApplication).activiyComponent.getLocalRepo().getlanguge())
+
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -88,6 +94,16 @@ class  MainActivity : AppCompatActivity() {
                 startActivityForResult(intent, 80);
             }
         }
+    }
+
+
+    fun setLocale(lang:String ) {
+        val resources: Resources = this.getResources()
+        val locale = Locale(lang)
+        Locale.setDefault(locale);
+        val config = Configuration()
+        config.locale = locale
+        resources.updateConfiguration(config, resources.getDisplayMetrics())
     }
 
 }

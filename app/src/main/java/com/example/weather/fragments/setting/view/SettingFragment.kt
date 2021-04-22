@@ -12,17 +12,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
+import com.example.weather.MyApplication
 import com.example.weather.databinding.FragmentSettingBinding
 import com.example.weather.data.remote.location.GetLocation
 import com.example.weather.data.remote.location.LocationHelper
 import com.example.weather.data.repos.LocalRepo
 import com.example.weather.data.repos.LocationRepo
-import com.example.weather.data.repos.RemoteRepo
 import com.example.weather.fragments.setting.viewmodel.SettingViewModel
 import com.example.weather.fragments.setting.viewmodel.SettingViewModelFactory
+import com.example.weather.main.view.MainActivity
 import com.example.weather.main.viewmodel.MainViewModel
 import com.example.weather.main.viewmodel.MainViewModelFactory
 import com.example.weather.map.MapActivity
@@ -42,9 +42,10 @@ class SettingFragment : Fragment(), GetLocation {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= FragmentSettingBinding.inflate(layoutInflater)
-        mainViewModel= ViewModelProvider(requireActivity(),MainViewModelFactory(RemoteRepo,LocalRepo)).get(MainViewModel::class.java)
-        settingViewModel= ViewModelProvider(this,SettingViewModelFactory(LocationRepo(requireActivity(), this),LocalRepo)).get(SettingViewModel::class.java)
-        Log.i(TAG, "onCreate: "+mainViewModel.toString())
+        //Dagger
+        mainViewModel= ViewModelProvider(requireActivity(),MainViewModelFactory((requireActivity().application as MyApplication).activiyComponent.getRemoteRepo(),(requireActivity().application as MyApplication).activiyComponent.getLocalRepo())).get(MainViewModel::class.java)
+        settingViewModel= ViewModelProvider(this,SettingViewModelFactory(LocationRepo(requireActivity(), this),(requireActivity().application as MyApplication).activiyComponent.getLocalRepo())).get(SettingViewModel::class.java)
+
     }
 
 

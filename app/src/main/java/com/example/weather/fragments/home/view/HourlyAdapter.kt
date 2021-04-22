@@ -28,7 +28,8 @@ HourlyAdapter(var list:MutableList<HourlyItem?>,var unit:String): RecyclerView.A
             TemperUnit.FAHRENHEIT->holder.rowView.temptxt .text=""+list.get(position)?.temp?.toInt()?.toFahrenheit()
         }
 
-        Glide.with(holder.itemView.context).load(downloadIcon(list.get(position)?.weather?.get(0)?.icon)).into(holder.rowView.imageView3)
+       // Glide.with(holder.itemView.context).load(setImgLottie(list.get(position)?.weather?.get(0)?.icon!!)).into(holder.rowView.imageView3)
+        holder.rowView.imageView3.setAnimation(setImgLottie(list.get(position)?.weather?.get(0)?.icon!!))
 
     }
     override fun getItemCount(): Int =list.size

@@ -12,11 +12,15 @@ import com.example.weather.model.Favourite
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FavouriteViewModel(val repo:ILocalRepo,val remoteRepo: IRemoteRepo): ViewModel() {
 
     var TAG:String="main"
     var favouriteLiveData= MediatorLiveData<MutableList<Favourite>>()
+
+
+
 
 
     var loactionLiveData= MutableLiveData<Location>()
@@ -59,18 +63,14 @@ class FavouriteViewModel(val repo:ILocalRepo,val remoteRepo: IRemoteRepo): ViewM
     }
 
 
-
-
-
     ///get Fvaourite ifrom room
-    fun getFvaouritesRoom(context: Context){
+    fun  getFvaouritesRoom(){
 
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch {
 
-            favouriteLiveData.addSource(repo.getAllFavourite(), Observer {
+          favouriteLiveData.addSource(repo.getAllFavourite(), Observer {
 
-
-                favouriteLiveData.postValue(it.toMutableList())
+             favouriteLiveData.postValue(it.toMutableList())
 
             })
         }

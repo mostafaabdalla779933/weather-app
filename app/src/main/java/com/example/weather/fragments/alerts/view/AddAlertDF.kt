@@ -15,7 +15,7 @@ import com.example.weather.fragmentsdatetime.TimeFragment
 import com.example.weather.model.*
 import java.util.*
 
-class AddAlertDF(var onClickAlert: OnClickAlert): DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class AddAlertDF(var onAddAlert:(AlertData)->Unit ): DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
 
     lateinit var binding:AddAlertDialogBinding
@@ -42,8 +42,8 @@ class AddAlertDF(var onClickAlert: OnClickAlert): DialogFragment(), DatePickerDi
             if(binding.txtdate.text.isNullOrEmpty()||binding.txttime.text.isNullOrEmpty()){
                 requireActivity().toast("fill all data ")
             }else{
-
-                onClickAlert.onAddAlert(AlertData("alert",calendar))
+                ///edit
+                onAddAlert(AlertData("alert",calendar))
                 this.dismiss()
             }
         })

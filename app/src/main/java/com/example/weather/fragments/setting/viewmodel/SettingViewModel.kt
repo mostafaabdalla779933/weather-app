@@ -30,7 +30,7 @@ class SettingViewModel(val locationRepoInterface: ILocationRepo,val repo:ILocalR
         resources.updateConfiguration(config, resources.displayMetrics);
         activity.finish()
         activity.startActivity(activity.intent)
-        Sharedprefer.putRepo(Setting.RETROFIT)
+        putRepo(Setting.RETROFIT)
         //(activity as MainActivity).recreate()
     }
     fun putlanguge(language: String){
@@ -72,62 +72,11 @@ class SettingViewModel(val locationRepoInterface: ILocationRepo,val repo:ILocalR
         return repo.getWindSpeed()
     }
 
-
-  /*  fun getLat():Float{
-
-        return repo.getLat()
-    }
-    fun putLat(lat:Float){
-
-        repo.putLat(lat)
-    }
-    fun getLng():Float{
-
-        return repo.getLng()
-    }
-
-    fun putLng(lng:Float){
-
-        repo.putLng(lng)
-    }
-
-    fun putTimeZone(timeZone:String){
-
-        repo.putTimeZone(timeZone)
-    }
-    fun getTimeZone():String{
-
-        return repo.getTimeZone()
-    }
-
-
     fun putRepo(rep:String){
 
         repo.putRepo(rep)
     }
 
-    fun getRepo():String?{
 
-        return Sharedprefer.getRepo()
-    }
-
-
-    fun putRepeating(day:Int){
-
-        repo.putRepeating(day)
-    }
-    fun getRepeating():Int?{
-
-        return repo.getRepeating()
-    }
-
-    fun putSwitch(flag:Boolean){
-
-        repo.putSwitch(flag)
-    }
-    fun getSwitch():Boolean{
-
-        return repo.getSwitch()
-    }*/
 
 }

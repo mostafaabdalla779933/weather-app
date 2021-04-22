@@ -11,6 +11,4 @@ interface WeatherApiService {
 
     @GET
     suspend fun load(@Url url:String):Response<DataResponse>
-
-
 }

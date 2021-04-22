@@ -1,4 +1,4 @@
-package com.example.weather.dialogalert
+package com.example.weather.fragments.alerts.view
 
 import android.media.Ringtone
 import android.media.RingtoneManager

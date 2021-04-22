@@ -82,9 +82,19 @@ class MapsFragment : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
-        viewModel = ViewModelProvider(this,MainViewModelFactory(RemoteRepo,LocalRepo)).get(MainViewModel::class.java)
+        //Dagger
+        viewModel = ViewModelProvider(
+                this,
+                MainViewModelFactory(
+                        (requireActivity().application as MyApplication).activiyComponent.getRemoteRepo(),
+                        (requireActivity().application as MyApplication).activiyComponent.getLocalRepo())
+        ).get(MainViewModel::class.java)
 
-        viewModelTest=ViewModelProvider(this,FavouriteViewModelFactory(LocalRepo,RemoteRepo)).get(FavouriteViewModel::class.java)
+        viewModelTest=ViewModelProvider(this,
+                FavouriteViewModelFactory(
+                        (requireActivity().application as MyApplication).activiyComponent.getLocalRepo(),
+                        (requireActivity().application as MyApplication).activiyComponent.getRemoteRepo())
+        ).get(FavouriteViewModel::class.java)
         binding= FragmentMapsBinding.inflate(layoutInflater)
 
         return binding.root

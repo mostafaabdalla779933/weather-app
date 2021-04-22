@@ -1,5 +1,6 @@
 package com.example.weather.fragments.favorite.view
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,17 +9,23 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.weather.MyApplication
+import com.example.weather.R
 import com.example.weather.data.repos.LocalRepo
 import com.example.weather.data.repos.RemoteRepo
 import com.example.weather.databinding.FragmentFavoriteBinding
 import com.example.weather.fragments.favorite.viewmodel.FavouriteViewModel
 import com.example.weather.fragments.favorite.viewmodel.FavouriteViewModelFactory
+import com.example.weather.main.view.MainActivity
 import com.example.weather.map.MapActivity
+import com.example.weather.map.MapsFragment
 import com.example.weather.model.Favourite
+import kotlinx.android.synthetic.main.fragment_maps.view.*
 
 
-class FavoriteFragment : Fragment(), OnClickFav {
+class FavoriteFragment : Fragment() {
 
     val TAG="main"
     lateinit var binding: FragmentFavoriteBinding
@@ -28,11 +35,21 @@ class FavoriteFragment : Fragment(), OnClickFav {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding=FragmentFavoriteBinding.inflate(layoutInflater)
-        viewModelTest=ViewModelProvider(this,FavouriteViewModelFactory(LocalRepo,RemoteRepo)).get(FavouriteViewModel::class.java)
 
 
-        viewModelTest.getFvaouritesRoom(requireContext())
-        favoriteAdapter = FavouriteAdapter(mutableListOf(),this)
+        //Dagger
+        viewModelTest=ViewModelProvider(this,FavouriteViewModelFactory((requireActivity().application as MyApplication).activiyComponent.getLocalRepo(),(requireActivity().application as MyApplication).activiyComponent.getRemoteRepo())).get(FavouriteViewModel::class.java)
+
+
+        viewModelTest.getFvaouritesRoom()
+
+        favoriteAdapter = FavouriteAdapter(mutableListOf(),{
+
+            viewModelTest.deletFvaouriteRoom(it,requireContext())
+        },{
+
+            ShowDetailsFragment(it.current).show(parentFragmentManager,"details")
+        })
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -54,11 +71,17 @@ class FavoriteFragment : Fragment(), OnClickFav {
         return binding.root
     }
 
+    @SuppressLint("RestrictedApi")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.floatingActionButton.setOnClickListener(View.OnClickListener {
-           startActivity(Intent(requireActivity(),MapActivity::class.java).putExtra("from",Tag))
+
+
+           // val navController = Navigation.findNavController(view)
+           // navController.navigate(R.id.maps_fragment)
+           // childFragmentManager.beginTransaction().replace(,MapsFragment()).addToBackStack("").commitNow()
+           startActivity(Intent(requireActivity(), MapActivity::class.java).putExtra("from",Tag))
         })
 
     }
@@ -66,11 +89,4 @@ class FavoriteFragment : Fragment(), OnClickFav {
         val Tag="favorite"
     }
 
-    override fun onItemDelete(favourite: Favourite) {
-        viewModelTest.deletFvaouriteRoom(favourite,requireContext())
-    }
-
-    override fun onItemClick(favourite: Favourite) {
-        ShowDetailsFragment(favourite.current).show(parentFragmentManager,"details")
-    }
 }

@@ -33,7 +33,8 @@ class DailyAdapter(var list:MutableList<DailyItem?>,var unit:String): RecyclerVi
             TemperUnit.FAHRENHEIT->holder.rowView.temoptxtday .text="" +list.get(position)?.temp?.min?.toInt()?.toFahrenheit() + "/" +list.get(position)?.temp?.max?.toInt()?.toFahrenheit()
         }
 
-        Glide.with(holder.itemView.context).load(downloadIcon(list.get(position)?.weather?.get(0)?.icon)).into(holder.rowView.imageView2)
+       // Glide.with(holder.itemView.context).load(setImgLottie(list.get(position)?.weather?.get(0)?.icon!!)).into(holder.rowView.imageView2)
+        holder.rowView.imageView2.setAnimation(setImgLottie(list.get(position)?.weather?.get(0)?.icon!!))
 
     }
 

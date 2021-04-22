@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.databinding.FavRowBinding
 import com.example.weather.model.Favourite
 
-class FavouriteAdapter(var list:MutableList<Favourite>,var onClickFav: OnClickFav): RecyclerView.Adapter<FavouriteAdapter.ViewHolder>() {
+class FavouriteAdapter(var list:MutableList<Favourite>,var onItemDelete: (Favourite)->Unit,var onItemClick:(Favourite)->Unit): RecyclerView.Adapter<FavouriteAdapter.ViewHolder>() {
 
 
     val TAG="main"
@@ -28,20 +28,14 @@ class FavouriteAdapter(var list:MutableList<Favourite>,var onClickFav: OnClickFa
 
         holder.rowView.imageButton.setOnClickListener(View.OnClickListener {
 
-            onClickFav.onItemDelete(list.get(position))
+           onItemDelete(list.get(position))
 
         })
 
         holder.rowView.textView2.setOnClickListener(View.OnClickListener {
-
-
-            onClickFav.onItemClick(list.get(position))
-
+            onItemClick(list.get(position))
         })
-
-
     }
-
 
     override fun getItemCount(): Int =list.size
 

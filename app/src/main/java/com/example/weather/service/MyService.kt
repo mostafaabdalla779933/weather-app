@@ -11,17 +11,18 @@ import androidx.core.app.JobIntentService
 import androidx.core.app.NotificationCompat
 import com.example.weather.MyApplication
 import com.example.weather.R
-import com.example.weather.dialogalert.DialogActivity
-import com.example.weather.data.local.room.Roomdata
-import com.example.weather.data.local.sharedpref.Sharedprefer
-import com.example.weather.data.repos.RemoteRepo
+import com.example.weather.data.repos.ILocalRepo
+import com.example.weather.data.repos.IRemoteRepo
+import com.example.weather.fragments.alerts.view.DialogActivity
 import com.example.weather.main.view.MainActivity
 import com.example.weather.model.AlertData
 import com.example.weather.model.AlertsItem
 import com.example.weather.model.isOnline
 import com.example.weather.util.NotificationUtil
 import com.google.gson.Gson
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MyService : JobIntentService() {
@@ -29,15 +30,22 @@ class MyService : JobIntentService() {
 
     lateinit var notificationManager: NotificationManager
     lateinit var notificationHelper:NotificationUtil
+    lateinit var localRepo:ILocalRepo
+    lateinit var remoteRepo:IRemoteRepo
 
     override fun onCreate() {
         super.onCreate()
         notificationManager=getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        localRepo=(application as MyApplication).activiyComponent.getLocalRepo()
+        remoteRepo=(application as MyApplication).activiyComponent.getRemoteRepo()
     }
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
+
+        (application as MyApplication).activiyComponent.getLocalRepo()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             raiseNotification()
@@ -49,9 +57,9 @@ class MyService : JobIntentService() {
             CoroutineScope(Dispatchers.IO).launch {
                 if(isOnline(MyApplication.getContext())) {
 
-                Roomdata.getDatabase(MyApplication.getContext()).roomDao().deleteAlert(alertData)
+                localRepo.deleteAlert(alertData)
 
-                var response = RemoteRepo?.getWeatherFormApi("data/2.5/onecall?lat=${Sharedprefer.getLat()}&lon=${Sharedprefer.getLng()}&exclude=daily,current,hourly,minutely&lang=en&appid=4b296deb770fc941bfd35a28581dc8b7")
+                var response = remoteRepo.getWeatherFormApi("data/2.5/onecall?lat=${localRepo.getLat()}&lon=${localRepo.getLng()}&exclude=daily,current,hourly,minutely&lang=en&appid=4b296deb770fc941bfd35a28581dc8b7")
 
 
                 if (response!!.isSuccessful) {
@@ -59,13 +67,13 @@ class MyService : JobIntentService() {
                     if (!alerts.isNullOrEmpty()) {
                         val data=alerts.filter { e -> e?.description?.isNotEmpty()!! }.take(1)
                         Log.i(TAG, "onStartCommand: "+data.size)
-                        if (Sharedprefer.getNotification()) {
+                        if (localRepo.getNotification()) {
                             showNotification(alertData, data.get(0)!!)
                         } else {
                             toDialogActivity(MyApplication.getContext(),data.get(0)!!)
                         }
                     } else {
-                        if (Sharedprefer.getNotification()) {
+                        if (localRepo.getNotification()) {
                             showNotification(alertData, AlertsItem(description = null))
                         } else {
                             toDialogActivity(MyApplication.getContext(),AlertsItem(description = null))
@@ -75,7 +83,7 @@ class MyService : JobIntentService() {
 
             }else{
 
-                Roomdata.getDatabase(MyApplication.getContext()).roomDao().deleteAlert(alertData)
+                localRepo.deleteAlert(alertData)
             }
          }
 

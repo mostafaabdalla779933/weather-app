@@ -11,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
+import com.example.weather.MyApplication
 import com.example.weather.R
 import com.example.weather.data.repos.LocalRepo
 import com.example.weather.data.repos.RemoteRepo
 import com.example.weather.databinding.FragmentHomeBinding
+import com.example.weather.main.view.MainActivity
 import com.example.weather.main.viewmodel.MainViewModel
 import com.example.weather.main.viewmodel.MainViewModelFactory
 import com.example.weather.model.*
@@ -37,8 +39,9 @@ class HomeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
-        viewModel = ViewModelProvider(requireActivity(),MainViewModelFactory(RemoteRepo,LocalRepo)).get(MainViewModel::class.java)
-        Log.i(TAG, "onCreate: "+viewModel.toString())
+        //Dagger
+       viewModel = ViewModelProvider(requireActivity(),MainViewModelFactory((requireActivity().application as MyApplication).activiyComponent.getRemoteRepo(),(requireActivity().application as MyApplication).activiyComponent.getLocalRepo())).get(MainViewModel::class.java)
+
 
         unitTemp=viewModel.getTemperUnit()
         unitWind=viewModel.getWindSpeed()
@@ -114,8 +117,8 @@ class HomeFragment : Fragment() {
 
             card.visibility=View.VISIBLE
 
-            txtdate.text = SimpleDateFormat("MMM dd ").format(Date().time)
-            txtzone.text=it?.timezone
+
+            txtCoder.text=it?.timezone.split("/")[1]
             cloud.text=it?.current?.clouds?.toString()
             visibility.text=it?.current?.visibility?.toString()
             ultra.text=it?.current?.uvi?.toString()
@@ -131,11 +134,15 @@ class HomeFragment : Fragment() {
                 TemperUnit.FAHRENHEIT->temp.text=""+(it?.current?.temp?.toInt())?.toFahrenheit()+"°F"
             }
             txtdescription.text=it?.current?.weather?.get(0)?.description
+            windimage.setAnimation(R.raw.windlot)
+            visibilityimage.setAnimation(R.raw.visiabilitylot)
         }
         dailyAdapter.list=it.daily?.drop(1)?.take(7)?.toMutableList()!!
         dailyAdapter.notifyDataSetChanged()
         hourlyAdapter.list=it.hourly?.take(24)?.toMutableList()!!
         hourlyAdapter.notifyDataSetChanged()
-        Glide.with(requireActivity().applicationContext).load(downloadIcon(it?.current?.weather?.get(0)?.icon)).into(binding.imageicon)
+
+       // Glide.with(requireActivity().applicationContext).load(setImgLottie(it?.current?.weather?.get(0)?.icon!!)).into(binding.imageicon)
+        binding.imageicon.setAnimation(setImgLottie(it?.current?.weather?.get(0)?.icon!!))
     }
 }

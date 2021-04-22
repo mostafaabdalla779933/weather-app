@@ -3,6 +3,7 @@ package com.example.weather.data.repos
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.weather.MyApplication
+import com.example.weather.data.local.room.RoomDao
 import com.example.weather.data.local.room.Roomdata
 import com.example.weather.data.local.sharedpref.ISharedprefer
 import com.example.weather.data.local.sharedpref.Sharedprefer
@@ -11,14 +12,11 @@ import com.example.weather.model.DataResponse
 import com.example.weather.model.Favourite
 import kotlin.math.ln
 
-object LocalRepo : ILocalRepo {
+class LocalRepo(val shared: ISharedprefer,val room:RoomDao) : ILocalRepo {
 
     ///******Data Sources
-    val shared: ISharedprefer =Sharedprefer
-    val room=Roomdata.getDatabase(MyApplication.getContext()).roomDao()
-
-
-
+   // val shared: ISharedprefer =Sharedprefer
+   // val room:RoomDao=Roomdata.getDatabase(MyApplication.getContext()).roomDao()
 
 
     override suspend fun addWeather(response: DataResponse){
