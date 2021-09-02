@@ -37,4 +37,6 @@
             android:id="@+id/action_favoriteFragment_to_maps_fragment"
             app:destination="@id/maps_fragment" />
     </fragment>
+
+
 </navigation>

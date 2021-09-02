@@ -14,19 +14,13 @@ class Sharedprefer(val sharedPreferences:SharedPreferences,val editor: SharedPre
    // private val sharedPreferences: SharedPreferences= MyApplication.getContext() .getSharedPreferences("weather", Context.MODE_MULTI_PROCESS)
   // private val editor: SharedPreferences.Editor=sharedPreferences.edit()
     var TAG="main"
-
-
     //**************languge***********//
-
     override fun putlanguge(language: String){
-
         editor.putString( Setting.LANGUADE ,language)
         editor.apply()
-
     }
 
     override fun getlanguge():String{
-
         return sharedPreferences.getString(Setting.LANGUADE,Language.ENGLISH)!!
     }
 
@@ -34,26 +28,17 @@ class Sharedprefer(val sharedPreferences:SharedPreferences,val editor: SharedPre
     //**************notification***********//
 
     override fun putNotification(notificationFlag: Boolean){
-
         editor.putBoolean( Setting.NOTIFICATION ,notificationFlag)
-
         editor.apply()
-
     }
 
     override fun getNotification():Boolean{
-
         return sharedPreferences.getBoolean(Setting.NOTIFICATION,true)!!
     }
-
-
     //************TemperUnit*************//
-
     override fun putTemperUnit(temperUnit: String){
-
         editor.putString( Setting.TEMPERATURE ,temperUnit)
         editor.apply()
-
     }
 
     override fun getTemperUnit():String{

@@ -26,19 +26,19 @@ import kotlinx.coroutines.launch
 
 
 class MyService : JobIntentService() {
-    val TAG="main"
+    val TAG = "main"
 
     lateinit var notificationManager: NotificationManager
-    lateinit var notificationHelper:NotificationUtil
-    lateinit var localRepo:ILocalRepo
-    lateinit var remoteRepo:IRemoteRepo
+    lateinit var notificationHelper: NotificationUtil
+    lateinit var localRepo: ILocalRepo
+    lateinit var remoteRepo: IRemoteRepo
 
     override fun onCreate() {
         super.onCreate()
-        notificationManager=getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        localRepo=(application as MyApplication).activiyComponent.getLocalRepo()
-        remoteRepo=(application as MyApplication).activiyComponent.getRemoteRepo()
+        localRepo = (application as MyApplication).activiyComponent.getLocalRepo()
+        remoteRepo = (application as MyApplication).activiyComponent.getRemoteRepo()
     }
 
 
@@ -51,11 +51,11 @@ class MyService : JobIntentService() {
             raiseNotification()
         }
 
-        var alertData: AlertData = Gson().fromJson(intent?.getStringExtra(AlertData.TAG),AlertData::class.java)
+        var alertData: AlertData = Gson().fromJson(intent?.getStringExtra(AlertData.TAG), AlertData::class.java)
 
 
-            CoroutineScope(Dispatchers.IO).launch {
-                if(isOnline(MyApplication.getContext())) {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (isOnline(MyApplication.getContext())) {
 
                 localRepo.deleteAlert(alertData)
 
@@ -65,27 +65,27 @@ class MyService : JobIntentService() {
                 if (response!!.isSuccessful) {
                     var alerts = response.body()?.alerts
                     if (!alerts.isNullOrEmpty()) {
-                        val data=alerts.filter { e -> e?.description?.isNotEmpty()!! }.take(1)
-                        Log.i(TAG, "onStartCommand: "+data.size)
+                        val data = alerts.filter { e -> e?.description?.isNotEmpty()!! }.take(1)
+                        Log.i(TAG, "onStartCommand: " + data.size)
                         if (localRepo.getNotification()) {
                             showNotification(alertData, data.get(0)!!)
                         } else {
-                            toDialogActivity(MyApplication.getContext(),data.get(0)!!)
+                            toDialogActivity(MyApplication.getContext(), data.get(0)!!)
                         }
                     } else {
                         if (localRepo.getNotification()) {
                             showNotification(alertData, AlertsItem(description = null))
                         } else {
-                            toDialogActivity(MyApplication.getContext(),AlertsItem(description = null))
+                            toDialogActivity(MyApplication.getContext(), AlertsItem(description = null))
                         }
                     }
                 }
 
-            }else{
+            } else {
 
                 localRepo.deleteAlert(alertData)
             }
-         }
+        }
 
 
 
@@ -99,9 +99,6 @@ class MyService : JobIntentService() {
     }
 
 
-
-
-
     override fun onDestroy() {
         super.onDestroy()
 
@@ -113,43 +110,40 @@ class MyService : JobIntentService() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun raiseNotification() {
         val pendingIntent: PendingIntent =
-            Intent(this, MainActivity::class.java).let { notificationIntent ->
-                PendingIntent.getActivity(this, 0, notificationIntent, 0)
-            }
-        notificationManager=getSystemService(NotificationManager::class.java)
+                Intent(this, MainActivity::class.java).let { notificationIntent ->
+                    PendingIntent.getActivity(this, 0, notificationIntent, 0)
+                }
+        notificationManager = getSystemService(NotificationManager::class.java)
 
-        notificationManager.createNotificationChannel(NotificationChannel("CHANNEL_DEFAULT_IMPORTANCE","MyService",NotificationManager.IMPORTANCE_HIGH))
+        notificationManager.createNotificationChannel(NotificationChannel("CHANNEL_DEFAULT_IMPORTANCE", "MyService", NotificationManager.IMPORTANCE_HIGH))
 
 
         val notification: Notification = NotificationCompat.Builder(this, "CHANNEL_DEFAULT_IMPORTANCE")
-            .setContentTitle("weather")
-            .setContentText("updating")
-            .setSmallIcon(R.drawable.cloudy)
-            .setContentIntent(pendingIntent)
-            .setTicker("")
-            .setAutoCancel(true)
-            .build()
+                .setContentTitle("weather")
+                .setContentText("updating")
+                .setSmallIcon(R.drawable.cloudy)
+                .setContentIntent(pendingIntent)
+                .setTicker("")
+                .setAutoCancel(true)
+                .build()
 
         startForeground(44, notification)
 
     }
 
 
-
-    fun toDialogActivity(context: Context,alertsItem: AlertsItem){
+    fun toDialogActivity(context: Context, alertsItem: AlertsItem) {
         val intent2 = Intent("android.intent.action.MAIN")
         intent2.setClass(context, DialogActivity::class.java)
         intent2.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent2.putExtra("AlertsItem",Gson().toJson(alertsItem))
+        intent2.putExtra("AlertsItem", Gson().toJson(alertsItem))
         context.startActivity(intent2)
     }
 
-    fun showNotification(alertData: AlertData,alertsItem: AlertsItem){
+    fun showNotification(alertData: AlertData, alertsItem: AlertsItem) {
         notificationHelper = NotificationUtil(alertsItem)
-        var  builder:NotificationCompat.Builder = notificationHelper.getChannelNotification()
+        var builder: NotificationCompat.Builder = notificationHelper.getChannelNotification()
         notificationHelper.getManager().notify(alertData.hashCode(), builder.build())
     }
-
-
 }
 

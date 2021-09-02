@@ -33,104 +33,100 @@ import com.example.weather.model.WindSpeed
 
 class SettingFragment : Fragment(), GetLocation {
 
-    val TAG="main"
+    val TAG = "main"
     lateinit var binding: FragmentSettingBinding
-    lateinit var  settingViewModel: SettingViewModel
+    lateinit var settingViewModel: SettingViewModel
     lateinit var mainViewModel: MainViewModel
-    lateinit var pager: ViewPager
+   // lateinit var pager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= FragmentSettingBinding.inflate(layoutInflater)
+        binding = FragmentSettingBinding.inflate(layoutInflater)
         //Dagger
-        mainViewModel= ViewModelProvider(requireActivity(),MainViewModelFactory((requireActivity().application as MyApplication).activiyComponent.getRemoteRepo(),(requireActivity().application as MyApplication).activiyComponent.getLocalRepo())).get(MainViewModel::class.java)
-        settingViewModel= ViewModelProvider(this,SettingViewModelFactory(LocationRepo(requireActivity(), this),(requireActivity().application as MyApplication).activiyComponent.getLocalRepo())).get(SettingViewModel::class.java)
+
+        val app = (requireActivity().application as MyApplication).activiyComponent
+        mainViewModel = ViewModelProvider(requireActivity(), MainViewModelFactory(app.getRemoteRepo(), app.getLocalRepo())).get(MainViewModel::class.java)
+        settingViewModel = ViewModelProvider(this, SettingViewModelFactory(LocationRepo(requireActivity(), this), app.getLocalRepo())).get(SettingViewModel::class.java)
 
     }
 
 
     @SuppressLint("RestrictedApi")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        pager = container as ViewPager
+       // pager = container as ViewPager
         setDefaulSettings()
 
-        binding.btnmap.setOnClickListener(View.OnClickListener {
-            requireActivity().startActivity(Intent(this.context,MapActivity::class.java).putExtra("from",Tag))
-        })
+        binding.btnmap.setOnClickListener {
+            requireActivity().startActivity(Intent(this.context, MapActivity::class.java).putExtra("from", Tag))
+        }
 
-        binding.btngps.setOnClickListener(View.OnClickListener {
+        binding.btngps.setOnClickListener {
 
             settingViewModel.getLocation()
 
-        })
+        }
 
         //******************************chaecked**************************************//
 
-        binding.enable.setOnClickListener(View.OnClickListener {
+        binding.enable.setOnClickListener {
 
             settingViewModel.putNotification(true)
-        })
+        }
 
 
-        binding.disable.setOnClickListener(View.OnClickListener {
+        binding.disable.setOnClickListener {
 
             settingViewModel.putNotification(false)
-        })
+        }
 
 
         //*******
-        binding.arabic.setOnClickListener(View.OnClickListener {
+        binding.arabic.setOnClickListener {
             settingViewModel.putlanguge(Language.ARABIC)
 
-            settingViewModel.setLocale("ar",requireContext(),requireActivity())
+            settingViewModel.setLocale("ar", requireContext(), requireActivity())
+        }
 
-        })
-
-        binding.english.setOnClickListener(View.OnClickListener {
-
+        binding.english.setOnClickListener {
             settingViewModel.putlanguge(Language.ENGLISH)
-            settingViewModel.setLocale("en",requireContext(),requireActivity())
-
-        })
+            settingViewModel.setLocale("en", requireContext(), requireActivity())
+        }
 
         ///***********
-        binding.kelvin.setOnClickListener(View.OnClickListener {
+        binding.kelvin.setOnClickListener {
 
             settingViewModel.putTemperUnit(TemperUnit.KELVIN)
-        })
-        binding.celsius.setOnClickListener(View.OnClickListener {
+        }
+        binding.celsius.setOnClickListener {
             settingViewModel.putTemperUnit(TemperUnit.CELSIUS)
-        })
-        binding.farhrenheit.setOnClickListener(View.OnClickListener {
+        }
+        binding.farhrenheit.setOnClickListener {
 
             settingViewModel.putTemperUnit(TemperUnit.FAHRENHEIT)
-        })
+        }
 
         //**************
 
-        binding.mpersec.setOnClickListener(View.OnClickListener {
+        binding.mpersec.setOnClickListener {
             settingViewModel.putWindSpeed(WindSpeed.MPERSEC)
-        })
-        binding.mileperhour.setOnClickListener(View.OnClickListener {
+        }
+        binding.mileperhour.setOnClickListener {
             settingViewModel.putWindSpeed(WindSpeed.MPERHOUR)
 
-        })
+        }
         //*****************************************************************************//
 
 
-       return binding.root
+        return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
 
-    }
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if(requestCode== LocationHelper.PERMISSION_ID){
-            if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+        if (requestCode == LocationHelper.PERMISSION_ID) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 Log.i(TAG, "onRequestPermissionsResult: ")
                 settingViewModel.getLocation()
@@ -140,8 +136,7 @@ class SettingFragment : Fragment(), GetLocation {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        Log.i(TAG, "onActivityResult: "+159899525)
+        Log.i(TAG, "onActivityResult: " + 159899525)
 
     }
 
@@ -151,33 +146,33 @@ class SettingFragment : Fragment(), GetLocation {
 
             if (settingViewModel.getNotification()) {
                 enable.isChecked = true
-            }else{
-                disable.isChecked=true
+            } else {
+                disable.isChecked = true
             }
-            when(settingViewModel.getTemperUnit()){
-                TemperUnit.CELSIUS->celsius.isChecked=true
-                TemperUnit.FAHRENHEIT->farhrenheit.isChecked=true
-                TemperUnit.KELVIN->kelvin.isChecked=true
+            when (settingViewModel.getTemperUnit()) {
+                TemperUnit.CELSIUS -> celsius.isChecked = true
+                TemperUnit.FAHRENHEIT -> farhrenheit.isChecked = true
+                TemperUnit.KELVIN -> kelvin.isChecked = true
             }
-            when(settingViewModel.getlanguge()){
-                Language.ENGLISH->english.isChecked=true
-                Language.ARABIC->arabic.isChecked=true
+            when (settingViewModel.getlanguge()) {
+                Language.ENGLISH -> english.isChecked = true
+                Language.ARABIC -> arabic.isChecked = true
             }
-            when(settingViewModel.getWindSpeed()){
+            when (settingViewModel.getWindSpeed()) {
 
-                WindSpeed.MPERSEC->mpersec.isChecked=true
-                WindSpeed.MPERHOUR->mileperhour.isChecked=true
+                WindSpeed.MPERSEC -> mpersec.isChecked = true
+                WindSpeed.MPERHOUR -> mileperhour.isChecked = true
             }
         }
     }
 
     companion object {
-        val Tag:String="Setting"
+        val Tag: String = "Setting"
     }
 
     override fun onLoctionResult(location: Location) {
         mainViewModel.setLocation(location)
-        pager.currentItem=0
+       // pager.currentItem = 0
     }
 }
 

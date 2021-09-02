@@ -1,16 +1,16 @@
 package com.example.weather.main.view
 
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.weather.fragments.alerts.view.AlertsFragment
 import com.example.weather.fragments.favorite.view.FavoriteFragment
 import com.example.weather.fragments.home.view.HomeFragment
 import com.example.weather.fragments.setting.view.SettingFragment
 
-class MainPagerAdapter(var fragmentManager: FragmentManager): FragmentStatePagerAdapter(fragmentManager) {
+class MainPagerAdapter(var fragmentActivity: FragmentActivity):  FragmentStateAdapter(fragmentActivity) {
 
-    override fun getItem(position: Int): Fragment = when (position) {
+    override fun createFragment(position: Int): Fragment = when (position) {
         0 -> HomeFragment()
         1 -> AlertsFragment()
         2 -> FavoriteFragment()
@@ -18,5 +18,6 @@ class MainPagerAdapter(var fragmentManager: FragmentManager): FragmentStatePager
         else -> HomeFragment()
     }
 
-    override fun getCount(): Int = 4
+    override fun getItemCount(): Int = 4
 }
+

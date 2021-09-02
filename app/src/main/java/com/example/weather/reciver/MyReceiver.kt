@@ -13,15 +13,9 @@ import com.example.weather.util.AlarmUtil
 import com.example.weather.util.NotificationUtil
 
 class MyReceiver : BroadcastReceiver() {
-
     val TAG="main"
-
     override fun onReceive(context: Context, intent: Intent) {
-
         Log.i(TAG, "onReceive: "+intent.action)
-
-
-
         when(intent.action){
 
             AlertData.TAG->{
@@ -40,7 +34,4 @@ class MyReceiver : BroadcastReceiver() {
         }
 
     }
-
-
-
 }

@@ -95,8 +95,6 @@ class  MainActivity : AppCompatActivity() {
             }
         }
     }
-
-
     fun setLocale(lang:String ) {
         val resources: Resources = this.getResources()
         val locale = Locale(lang)
@@ -105,5 +103,4 @@ class  MainActivity : AppCompatActivity() {
         config.locale = locale
         resources.updateConfiguration(config, resources.getDisplayMetrics())
     }
-
 }

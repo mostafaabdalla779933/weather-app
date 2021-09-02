@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.example.weather.model.AlertData
 import com.example.weather.model.DataResponse
 import com.example.weather.model.Favourite
+import kotlinx.coroutines.flow.Flow
 
 interface ILocalRepo {
     suspend fun addWeather(response: DataResponse)
@@ -15,7 +16,7 @@ interface ILocalRepo {
     suspend fun getAllFavourite(): LiveData<List<Favourite>>
     suspend fun addAlert(alert: AlertData)
     suspend fun deleteAlert(alert: AlertData)
-    suspend fun getAllAlerts(): LiveData<List<AlertData>>
+    suspend fun getAllAlerts(): Flow<List<AlertData>>
     fun putlanguge(language: String)
     fun getlanguge(): String
     fun putNotification(notificationFlag: Boolean)

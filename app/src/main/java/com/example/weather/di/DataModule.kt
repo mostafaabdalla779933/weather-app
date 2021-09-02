@@ -60,8 +60,6 @@ class DataModule{
     @Provides
     @Singleton
     fun provideSharedpreferences(): SharedPreferences {
-
-
         return   MyApplication.getContext().getSharedPreferences("weather", Context.MODE_MULTI_PROCESS)
     }
 
@@ -75,11 +73,19 @@ class DataModule{
         return  RemoteRepo(weatherApiService)
     }
 
+
+
     @Provides
     @Singleton
     fun providWeatherApiService(retrofit: Retrofit): WeatherApiService {
         return retrofit.create(WeatherApiService::class.java)
     }
+
+  /*  @Provides
+    @Singleton
+    fun providWeatherApiService(retrofit: Retrofit): WeatherApiService {
+        return Retrofit.Builder().baseUrl("https://api.openweathermap.org/").addConverterFactory(GsonConverterFactory.create()).build().create(WeatherApiService::class.java)
+    }*/
 
 
     @Provides

@@ -8,7 +8,6 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [DataModule::class])
 interface ActivityComponent {
-
    fun getRemoteRepo():IRemoteRepo
    fun getLocalRepo():ILocalRepo
 }

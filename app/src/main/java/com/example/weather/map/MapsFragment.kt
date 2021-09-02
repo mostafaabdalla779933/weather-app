@@ -80,7 +80,7 @@ class MapsFragment : Fragment(){
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         //Dagger
         viewModel = ViewModelProvider(
@@ -147,31 +147,17 @@ class MapsFragment : Fragment(){
 
     private fun showSaveLocationSnackbar( latLng:LatLng?) {
         val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_INDEFINITE)
-
-
         val customSnack = layoutInflater.inflate(R.layout.snackbar, null)
-
         val snackbarBinding = SnackbarBinding.bind(customSnack)
         //snackbar.view.setBackgroundColor(R.color.black)
-
-
         val snackbarLayout = snackbar.view as (Snackbar.SnackbarLayout)
-
         // Set padding to snackbar layout
         snackbarLayout.setPadding(0, 0, 0, 0)
-
         // Set the name of selected location
-
-
-
         var geocoder=Geocoder(activity?.applicationContext)
-
         var list:List<Address> = geocoder.getFromLocation(latLng?.latitude!!, latLng?.longitude!!,1)
-
         val favName=list.get(0).countryName
-
         snackbarBinding.txt.text = favName
-
         // Save selected location as favorite place
         snackbarBinding.addbtn .setOnClickListener {
             when(from){
@@ -181,10 +167,7 @@ class MapsFragment : Fragment(){
             }
             requireActivity().finish()
         }
-
         snackbarLayout.addView(customSnack)
-
         snackbar.show()
     }
-
 }

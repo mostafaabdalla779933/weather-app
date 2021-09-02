@@ -4,7 +4,7 @@ import android.app.Activity
 import com.example.weather.data.remote.location.GetLocation
 import com.example.weather.data.remote.location.LocationHelper
 
-class LocationRepo(private var activity: Activity, private var getLocation: GetLocation) : ILocationRepo {
+class LocationRepo(activity: Activity, getLocation: GetLocation) : ILocationRepo {
 
     var locationHelper: LocationHelper
     init {

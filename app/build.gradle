@@ -49,11 +49,10 @@ android {
 
 }
 
-
-apply plugin: "kotlin-kapt"
+apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
-//apply plugin: 'com.google.gms.google-services'
-
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
 dependencies {
 
 
@@ -85,7 +84,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:18.0.0'
 
     // ViewModel
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.3.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     // Saved state module for ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:2.3.1"
 
@@ -109,17 +108,9 @@ dependencies {
     implementation "androidx.work:work-runtime-ktx:$work_version"
 
     implementation 'me.relex:circleindicator:2.1.6'
-
-
     implementation "com.airbnb.android:lottie:3.4.0"
-
-
     // life cycle
-
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
-
-
-
     // Kotlin
     implementation "androidx.navigation:navigation-fragment-ktx:2.3.5"
     implementation "androidx.navigation:navigation-ui-ktx:2.3.5"
@@ -129,5 +120,14 @@ dependencies {
 
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:2.3.5"
+
+
+    //dagger
+    implementation 'com.google.dagger:dagger:2.33'
+    kapt 'com.google.dagger:dagger-compiler:2.33'
+
+
+    //sdp
+    implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
 }

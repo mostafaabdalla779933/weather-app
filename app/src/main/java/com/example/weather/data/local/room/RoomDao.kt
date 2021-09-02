@@ -5,6 +5,7 @@ import androidx.room.*
 import com.example.weather.model.AlertData
 import com.example.weather.model.DataResponse
 import com.example.weather.model.Favourite
+import kotlinx.coroutines.flow.Flow
 import java.util.*
 
 
@@ -59,8 +60,10 @@ interface RoomDao {
         suspend fun deleteAlert(alert: AlertData)
 
 
-        @Query("SELECT * FROM alertdata")
-        fun getAllAlerts():LiveData<List<AlertData>>
+      /*  @Query("SELECT * FROM alertdata")
+        fun getAllAlerts():LiveData<List<AlertData>>*/
 
+        @Query("SELECT * FROM alertdata")
+        fun getAllAlerts(): Flow<List<AlertData>>
 
 }

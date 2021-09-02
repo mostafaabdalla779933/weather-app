@@ -1,28 +1,21 @@
 package com.example.weather.fragments.home.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager.widget.ViewPager
-import com.bumptech.glide.Glide
+import androidx.viewpager2.widget.ViewPager2
 import com.example.weather.MyApplication
 import com.example.weather.R
-import com.example.weather.data.repos.LocalRepo
-import com.example.weather.data.repos.RemoteRepo
 import com.example.weather.databinding.FragmentHomeBinding
-import com.example.weather.main.view.MainActivity
 import com.example.weather.main.viewmodel.MainViewModel
 import com.example.weather.main.viewmodel.MainViewModelFactory
 import com.example.weather.model.*
 import com.google.android.material.snackbar.Snackbar
-import java.text.SimpleDateFormat
-import java.util.*
 
 class HomeFragment : Fragment() {
 
@@ -31,7 +24,7 @@ class HomeFragment : Fragment() {
     lateinit var viewModel: MainViewModel
     lateinit var dailyAdapter: DailyAdapter
     lateinit var hourlyAdapter: HourlyAdapter
-    lateinit var pager: ViewPager
+    //lateinit var pager: ViewPager2
     lateinit var unitTemp:String
     lateinit var unitWind:String
 
@@ -39,8 +32,16 @@ class HomeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
+
+        val app = (requireActivity().application as MyApplication).activiyComponent
+
         //Dagger
-       viewModel = ViewModelProvider(requireActivity(),MainViewModelFactory((requireActivity().application as MyApplication).activiyComponent.getRemoteRepo(),(requireActivity().application as MyApplication).activiyComponent.getLocalRepo())).get(MainViewModel::class.java)
+       viewModel = ViewModelProvider(
+               requireActivity(),
+               MainViewModelFactory(
+                       app.getRemoteRepo(),
+                       app.getLocalRepo())
+       ).get(MainViewModel::class.java)
 
 
         unitTemp=viewModel.getTemperUnit()
@@ -49,19 +50,32 @@ class HomeFragment : Fragment() {
         dailyAdapter= DailyAdapter(mutableListOf(),unitTemp)
         hourlyAdapter= HourlyAdapter(mutableListOf(),unitTemp)
         // fetch data
-        viewModel.getWeather()
+        viewModel.fetchWeather()
 
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        pager=container as ViewPager
+       // pager = container as ViewPager2
         binding.card.visibility=View.INVISIBLE
         binding.firstTime.visibility=View.GONE
+
+
+        binding.refresh.setOnRefreshListener {
+
+            viewModel.refresh()
+            binding.refresh.isRefreshing=false
+        }
+
+        binding.refresh.setColorSchemeResources(
+                R.color.black,
+                R.color.blue,
+                R.color.blue
+        )
         
         
-        viewModel.firstTimeLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.firstTimeLiveData.observe(viewLifecycleOwner, {
 
             if (it) {
                 binding.firstTime.visibility=View.VISIBLE
@@ -71,9 +85,9 @@ class HomeFragment : Fragment() {
         })
 
 
-        binding.firstTime.setOnClickListener(View.OnClickListener {
-            pager.currentItem=3
-        })
+        binding.firstTime.setOnClickListener{
+           // pager.currentItem=3
+        }
 
 
         binding.recyclDaily.apply {
@@ -88,13 +102,13 @@ class HomeFragment : Fragment() {
 
 
         ///show weather
-        viewModel.weatherLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.weatherLiveData.observe(viewLifecycleOwner, {
 
             binding.progressBar.visibility=View.INVISIBLE
             applyDatatoScreen(it)
         })
 
-        viewModel.erroLive.observe(viewLifecycleOwner, Observer {
+        viewModel.erroLive.observe(viewLifecycleOwner, {
 
             if (it){
                 Snackbar.make(this.requireView(), getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE )

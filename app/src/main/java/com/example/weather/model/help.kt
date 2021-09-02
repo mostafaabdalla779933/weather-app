@@ -13,19 +13,15 @@ fun Context.toast(message: CharSequence) = Toast.makeText(this, message, Toast.L
 
 fun downloadIcon(icon:String?)="https://openweathermap.org/img/w/$icon.png"
 
-
 fun Calendar.getFormatDate()= SimpleDateFormat("MMM d, yyyy hh:mm a").format(this.time)
 
-fun Long.getDate()= SimpleDateFormat("MMM d, yyyy hh:mm a").format(this*1000)
+fun Long.getDate() = SimpleDateFormat("MMM d, yyyy hh:mm a").format(this*1000)
 
 fun Int.toCelsius()=this-273
 
 fun Int.toFahrenheit()=(9*(this-273)/3 +32)
 
 const  val KEY = "4b296deb770fc941bfd35a28581dc8b7"
-
-
-
 
 fun isOnline(context: Context): Boolean {
     val connectivityManager =
@@ -48,9 +44,6 @@ fun isOnline(context: Context): Boolean {
     }
     return false
 }
-
-
-
 fun setImgLottie(icon: String):Int{
     return when(icon){
         "01d" -> R.raw.dd01

@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/refresh"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-
-
+<ScrollView  android:layout_height="wrap_content"
+    android:layout_width="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -36,42 +37,12 @@
             android:text="@string/set_you_location"/>
 
 
-
-
-        <TextView
-            android:id="@+id/txtzone"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:padding="5dp"
-            android:text=""
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/txtdate"
-            android:layout_width="110dp"
-            android:layout_height="40dp"
-            android:padding="5dp"
-            android:text=""
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-
-
         <androidx.cardview.widget.CardView
             android:id="@+id/card"
             android:layout_width="match_parent"
-
             android:layout_height="350dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="25dp"
             android:layout_marginRight="20dp"
             android:background="@color/Trans"
             app:cardBackgroundColor="@color/Transblue"
@@ -84,9 +55,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:background="@color/Transblue">
-
 
                 <TextView
                     android:id="@+id/temp"
@@ -94,14 +63,12 @@
                     android:layout_height="125dp"
                     android:layout_marginTop="44dp"
                     android:gravity="center"
-                    android:text="36 c"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="40sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-
 
                 <TextView
                     android:id="@+id/txtdescription"
@@ -114,20 +81,20 @@
                     app:layout_constraintStart_toStartOf="@+id/temp"
                     app:layout_constraintTop_toBottomOf="@+id/temp" />
 
-                <ImageView
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/imageicon"
                     android:layout_width="150dp"
-
                     android:layout_height="122dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"/>
 
 
-                <ImageView
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/cloudimage"
-
                     android:layout_width="80dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="20dp"
@@ -136,7 +103,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/cloud"
-                    app:tint="#FF69B4" />
+                    app:tint="#FFFFFF" />
 
                 <TextView
                     android:id="@+id/txtcloud"
@@ -235,7 +202,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/txtultra"
                     tools:layout_editor_absoluteX="25dp" />
 
-                <ImageView
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/visibilityimage"
                     android:layout_width="80dp"
                     android:layout_height="40dp"
@@ -244,8 +211,8 @@
                     android:layout_marginRight="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/visibility"
-                    app:tint="#2196F3" />
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"/>
 
                 <TextView
                     android:id="@+id/txtvisibility"
@@ -310,7 +277,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txtpressure" />
 
-                <ImageView
+                <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/windimage"
                     android:layout_width="80dp"
                     android:layout_height="40dp"
@@ -319,8 +286,8 @@
                     android:layout_marginRight="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pressure"
-                    app:srcCompat="@drawable/wind"
-                    app:tint="#FF9800" />
+                    app:lottie_autoPlay="true"
+                    app:lottie_loop="true"/>
 
                 <TextView
                     android:id="@+id/txtwind"
@@ -352,6 +319,8 @@
                     android:layout_width="120dp"
                     android:layout_height="35dp"
                     android:text=""
+                    android:textColor="@color/black"
+                    android:gravity="center"
                     app:layout_constraintEnd_toStartOf="@+id/visibilityimage"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/cloudimage"
@@ -380,10 +349,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclHourly" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -49,7 +49,7 @@ class AddAlertDF(var onAddAlert:(AlertData)->Unit ): DialogFragment(), DatePicke
         })
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
 
 

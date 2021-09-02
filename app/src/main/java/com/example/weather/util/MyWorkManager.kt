@@ -11,17 +11,7 @@ class MyWorkManager(context: Context, workerParams: WorkerParameters) : Worker(c
     val  TAG="main"
 
     override fun doWork(): Result {
-
-
         Log.i(TAG, "doWork: ")
-
-
-
-
-
         return Result.success()
-
     }
-
-
 }

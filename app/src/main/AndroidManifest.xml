@@ -24,9 +24,8 @@
             android:name=".service.MyService"
             android:enabled="true"
             android:exported="false" />
-
         <activity
-            android:name=".dialogalert.DialogActivity"
+            android:name=".fragments.alerts.view.DialogActivity"
             android:excludeFromRecents="false"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
@@ -36,13 +35,9 @@
             android:theme="@style/Theme.Design.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".fragments.alerts.view.AddAlertActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <receiver
             android:name=".reciver.MyReceiver"

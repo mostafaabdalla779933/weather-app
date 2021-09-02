@@ -11,53 +11,58 @@ import com.example.weather.data.repos.ILocalRepo
 import com.example.weather.model.DataResponse
 import com.example.weather.model.Setting
 import com.example.weather.model.isOnline
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 
-class MainViewModel(val remoteRepo: IRemoteRepo, val localRepo: ILocalRepo): ViewModel() {
+class MainViewModel(val remoteRepo: IRemoteRepo, val localRepo: ILocalRepo) : ViewModel() {
 
-    var TAG:String="main"
-    var weatherLiveData= MutableLiveData<DataResponse>()
-    var firstTimeLiveData=MutableLiveData<Boolean>()
-    var erroLive= MutableLiveData<Boolean>()
+    var TAG: String = "main"
+    var weatherLiveData = MutableLiveData<DataResponse>()
+    var firstTimeLiveData = MutableLiveData<Boolean>()
+    var erroLive = MutableLiveData<Boolean>()
 
 
     // fetch data
 
-    fun getWeather(){
-        val repoflag=localRepo.getRepo()
-        if(repoflag==null){
+    fun fetchWeather() {
+        val repoflag = localRepo.getRepo()
+        if (repoflag == null) {
 
-           firstTimeLiveData.postValue(true)
+            firstTimeLiveData.postValue(true)
 
-        }else if(repoflag==Setting.ROOM){
+        } else if (repoflag == Setting.ROOM) {
             //room
             getWeatherFromRoom(localRepo.getTimeZone())
             Log.i(TAG, "room ")
 
-        }else if(repoflag==Setting.RETROFIT){
+        } else if (repoflag == Setting.RETROFIT) {
 
             //retrofit
-            getWeatherFromRetrofit(localRepo.getLat().toString(),localRepo.getLng().toString())
+            getWeatherFromRetrofit(localRepo.getLat().toString(), localRepo.getLng().toString())
             Log.i(TAG, "retrofit ")
         }
+    }
+
+
+    fun refresh(){
+        localRepo.putRepo(Setting.RETROFIT)
+        fetchWeather()
     }
 
     //***************home Fragment*****************//
 
     ///get weather from retrofit
 
-    fun getWeatherFromRetrofit(lat:String, lon:String){
+    fun getWeatherFromRetrofit(lat: String, lon: String) {
 
-        val lang=localRepo.getlanguge()
+        val lang = localRepo.getlanguge()
+
+       
         CoroutineScope(Dispatchers.IO).launch {
 
             if (isOnline(MyApplication.getContext())) {
                 val response =
-                    remoteRepo.getWeatherFormApi("data/2.5/onecall?lat=$lat&lon=$lon&exclude=alerts,minutely&lang=$lang&appid=4b296deb770fc941bfd35a28581dc8b7")
+                        remoteRepo.getWeatherFormApi("data/2.5/onecall?lat=$lat&lon=$lon&exclude=alerts,minutely&lang=$lang&appid=4b296deb770fc941bfd35a28581dc8b7")
 
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
@@ -69,33 +74,33 @@ class MainViewModel(val remoteRepo: IRemoteRepo, val localRepo: ILocalRepo): Vie
                         erroLive.postValue(true)
                     }
                 }
-            }else{
+            } else {
                 erroLive.postValue(true)
             }
         }
     }
 
     ///set weather in room
-    fun setWeatherInRoom(response: DataResponse){
+    fun setWeatherInRoom(response: DataResponse) {
         CoroutineScope(Dispatchers.IO).launch {
-           localRepo.addWeather(response)
-           localRepo.putRepo(Setting.ROOM)
+            localRepo.addWeather(response)
+            localRepo.putRepo(Setting.ROOM)
         }
 
     }
 
 
-    fun getWeatherFromRoom(timezone:String){
+    fun getWeatherFromRoom(timezone: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
 
-            val response=localRepo.getWeatherByTimeZone(timezone)
+            val response = localRepo.getWeatherByTimeZone(timezone)
 
-            if (response.time-System.currentTimeMillis()>86400000){
+            if (response.time - System.currentTimeMillis() > 86400000) {
                 localRepo.putRepo(Setting.RETROFIT)
-                getWeather()
-            }else{
-                withContext(Dispatchers.Main){
+                fetchWeather()
+            } else {
+                withContext(Dispatchers.Main) {
                     weatherLiveData.postValue(response)
                 }
             }
@@ -104,33 +109,33 @@ class MainViewModel(val remoteRepo: IRemoteRepo, val localRepo: ILocalRepo): Vie
 
     ///**********************shared******************///
 
-    fun setLocation(location: Location){
+    fun setLocation(location: Location) {
         localRepo.putLat(location.latitude.toFloat())
         localRepo.putLng(location.longitude.toFloat())
         localRepo.putRepo(Setting.RETROFIT)
-        getWeather()
+        fetchWeather()
     }
 
-    fun setLocationFromMap(lat: Float,lon: Float){
+    fun setLocationFromMap(lat: Float, lon: Float) {
         localRepo.putLat(lat)
         localRepo.putLng(lon)
         localRepo.putRepo(Setting.RETROFIT)
-        getWeather()
+        fetchWeather()
     }
 
-    fun getTemperUnit():String{
+    fun getTemperUnit(): String {
         return localRepo.getTemperUnit()
     }
 
-    fun getWindSpeed():String{
-       return localRepo.getWindSpeed()
+    fun getWindSpeed(): String {
+        return localRepo.getWindSpeed()
     }
 
-    fun errorComplete(){
+    fun errorComplete() {
         erroLive.postValue(false)
     }
 
-    fun firstComplete(){
+    fun firstComplete() {
         firstTimeLiveData.postValue(false)
     }
 }

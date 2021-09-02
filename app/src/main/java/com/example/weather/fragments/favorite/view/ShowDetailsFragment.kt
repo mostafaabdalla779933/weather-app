@@ -20,7 +20,7 @@ class ShowDetailsFragment(var current: Current?): DialogFragment(){
 
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         applyDatatoScreen(current)
 

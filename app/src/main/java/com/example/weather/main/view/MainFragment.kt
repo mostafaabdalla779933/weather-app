@@ -6,9 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.viewpager2.widget.ViewPager2
 import com.example.weather.R
 import com.example.weather.databinding.FragmentMainBinding
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MainFragment:Fragment() {
 
@@ -19,22 +21,29 @@ class MainFragment:Fragment() {
         binding= FragmentMainBinding.inflate(layoutInflater)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         initViewPager()
         return binding.root
     }
 
 
+
     private fun initViewPager() {
         binding.viewpager.apply {
-            adapter= MainPagerAdapter(childFragmentManager)
-
-            addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(binding.tabLayout))
+            adapter= MainPagerAdapter(requireActivity())
         }
-        binding.apply {
 
 
-        }
+        TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
+
+            when(position){
+                0->tab.text = getString(R.string.home)
+                1->tab.text = getString(R.string.alerts)
+                2->tab.text = getString(R.string.favorite)
+                else->tab.text = getString(R.string.setting)
+            }
+           // tab.text = "OBJECT ${(position + 1)}"
+        }.attach()
 
         binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
             override fun onTabReselected(tab: TabLayout.Tab?) {}
@@ -45,6 +54,9 @@ class MainFragment:Fragment() {
             }
         })
     }
+
+
+
 
     companion object {
     }

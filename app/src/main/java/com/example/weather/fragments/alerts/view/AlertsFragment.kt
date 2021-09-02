@@ -1,11 +1,14 @@
 package com.example.weather.fragments.alerts.view
 
 
+import android.content.IntentFilter
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +20,8 @@ import com.example.weather.fragments.alerts.viewmodel.AlertViewModel
 import com.example.weather.fragments.alerts.viewmodel.AlertViewModelFactory
 import com.example.weather.main.view.MainActivity
 import com.example.weather.model.AlertData
-
+import com.example.weather.reciver.MyReceiver
+import kotlinx.coroutines.InternalCoroutinesApi
 
 
 class AlertsFragment :Fragment()
@@ -27,89 +31,45 @@ class AlertsFragment :Fragment()
 
     lateinit var alertAdapter:AlertAdapter
     lateinit var viewMode: AlertViewModel
+   // private val model: AlertViewModel by activityViewModels()
+ //  private val model: AlertViewModel by viewModels()
 
     lateinit var binding: FragmentAlertsBinding
+    @InternalCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding= FragmentAlertsBinding.inflate(layoutInflater)
+        val app = (requireActivity().application as MyApplication).activiyComponent
         //Dagger
-        viewMode= ViewModelProvider(this, AlertViewModelFactory((requireActivity().application as MyApplication).activiyComponent.getLocalRepo())).get(AlertViewModel::class.java)
+        viewMode= ViewModelProvider(this, AlertViewModelFactory(app.getLocalRepo())).get(AlertViewModel::class.java)
 
        // defaultSetting()
+
+      //  registerReceiver
+
+
+      /*  val intet :IntentFilter = IntentFilter()
+
+
+        requireActivity().registerReceiver(MyReceiver(),intet)
+        requireActivity().unregisterReceiver(MyReceiver())*/
+
 
         alertAdapter= AlertAdapter(mutableListOf()) {
             viewMode.cancleAlarm(it)
         }
         binding= FragmentAlertsBinding.inflate(layoutInflater)
 
-       /* if (Sharedprefer.getSwitch()){
 
-            binding.switch1.isChecked=true
-            binding.alarm24.isEnabled = true
-            binding.alarm48.isEnabled = true
-            binding.alarm72.isEnabled = true
-
-        }else{
-            binding.alarm24.isEnabled = false
-            binding.alarm48.isEnabled = false
-            binding.alarm72.isEnabled = false
-            binding.switch1.isChecked=false
-
-        }
-
-        when(Sharedprefer.getRepeating()){
-            1->binding.alarm24.isChecked=true
-
-            2->binding.alarm48.isChecked=true
-
-            3->binding.alarm72.isChecked=true
-        }*/
 
         viewMode.getAlertsFromRoom()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View?{
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
 
-       /*
 
-        binding.switch1.setOnCheckedChangeListener { buttonView, isChecked ->
-
-            if(isChecked){
-                binding.alarm24.isEnabled=true
-                binding.alarm48.isEnabled=true
-                binding.alarm72.isEnabled=true
-                Sharedprefer.putSwitch(true)
-            }else{
-                binding.alarm24.isEnabled=false
-                binding.alarm48.isEnabled=false
-                binding.alarm72.isEnabled=false
-                Sharedprefer.putSwitch(false)
-                viewMode.cancleRepeatingAlarm()
-            }
-        }
-
-
-        binding.alarm24.setOnClickListener(View.OnClickListener {
-
-            viewMode.addRepeatingAlarm(1)
-            Sharedprefer.putRepeating(1)
-        })
-
-
-        binding.alarm48.setOnClickListener(View.OnClickListener {
-
-            viewMode.addRepeatingAlarm(2)
-            Sharedprefer.putRepeating(2)
-        })
-
-        binding.alarm72.setOnClickListener(View.OnClickListener {
-
-            viewMode.addRepeatingAlarm(3)
-            Sharedprefer.putRepeating(3)
-        })*/
-
-        viewMode.alertsLiveData.observe(viewLifecycleOwner, Observer {
+        viewMode.alertsLiveData.observe(viewLifecycleOwner, {
             alertAdapter.list=it
             alertAdapter.notifyDataSetChanged()
         })
@@ -118,11 +78,12 @@ class AlertsFragment :Fragment()
             layoutManager= LinearLayoutManager(activity)
             adapter=alertAdapter
         }
-        binding.floatingActionButton.setOnClickListener(View.OnClickListener {
+        binding.floatingActionButton.setOnClickListener {
+
             AddAlertDF(onAddAlert = {
                 viewMode.addAlarm(it)
             }).show(parentFragmentManager,"details")
-        })
+        }
         return binding.root
     }
     companion object {

@@ -10,6 +10,7 @@ import com.example.weather.data.local.sharedpref.Sharedprefer
 import com.example.weather.model.AlertData
 import com.example.weather.model.DataResponse
 import com.example.weather.model.Favourite
+import kotlinx.coroutines.flow.Flow
 import kotlin.math.ln
 
 class LocalRepo(val shared: ISharedprefer,val room:RoomDao) : ILocalRepo {
@@ -80,7 +81,7 @@ class LocalRepo(val shared: ISharedprefer,val room:RoomDao) : ILocalRepo {
     }
 
 
-    override suspend fun getAllAlerts(): LiveData<List<AlertData>> {
+    override suspend fun getAllAlerts(): Flow<List<AlertData>> {
 
        return room.getAllAlerts()
     }
