@@ -2,13 +2,13 @@ package com.example.weather.fragments.home.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
+import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.MyApplication
 import com.example.weather.R
 import com.example.weather.databinding.FragmentHomeBinding
@@ -24,7 +24,6 @@ class HomeFragment : Fragment() {
     lateinit var viewModel: MainViewModel
     lateinit var dailyAdapter: DailyAdapter
     lateinit var hourlyAdapter: HourlyAdapter
-    //lateinit var pager: ViewPager2
     lateinit var unitTemp:String
     lateinit var unitWind:String
 
@@ -63,7 +62,6 @@ class HomeFragment : Fragment() {
 
 
         binding.refresh.setOnRefreshListener {
-
             viewModel.refresh()
             binding.refresh.isRefreshing=false
         }
@@ -97,8 +95,20 @@ class HomeFragment : Fragment() {
 
         binding.recyclHourly.apply {
             layoutManager=LinearLayoutManager(activity ,LinearLayoutManager.HORIZONTAL,false)
+            addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+                override fun onInterceptTouchEvent(view: RecyclerView, event: MotionEvent): Boolean {
+                    when (event.action) {
+                        MotionEvent.ACTION_DOWN -> binding.recyclHourly.parent.requestDisallowInterceptTouchEvent(true)
+                    }
+                    return false
+                }
+                override fun onTouchEvent(view: RecyclerView, event: MotionEvent) {}
+                override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+            })
             adapter=hourlyAdapter
         }
+
+
 
 
         ///show weather
@@ -121,18 +131,15 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    companion object {
 
-    }
-
-    fun applyDatatoScreen(it:DataResponse){
+    fun applyDatatoScreen(it:DataResponse?){
 
         binding.apply {
 
             card.visibility=View.VISIBLE
 
 
-            txtCoder.text=it?.timezone.split("/")[1]
+            txtCoder.text= it?.timezone?.split("/")?.get(1) ?: ""
             cloud.text=it?.current?.clouds?.toString()
             visibility.text=it?.current?.visibility?.toString()
             ultra.text=it?.current?.uvi?.toString()
@@ -151,9 +158,9 @@ class HomeFragment : Fragment() {
             windimage.setAnimation(R.raw.windlot)
             visibilityimage.setAnimation(R.raw.visiabilitylot)
         }
-        dailyAdapter.list=it.daily?.drop(1)?.take(7)?.toMutableList()!!
+        dailyAdapter.list=it?.daily?.drop(1)?.take(7)?.toMutableList()!!
         dailyAdapter.notifyDataSetChanged()
-        hourlyAdapter.list=it.hourly?.take(24)?.toMutableList()!!
+        hourlyAdapter.list= it.hourly?.take(24)?.toMutableList()!!
         hourlyAdapter.notifyDataSetChanged()
 
        // Glide.with(requireActivity().applicationContext).load(setImgLottie(it?.current?.weather?.get(0)?.icon!!)).into(binding.imageicon)

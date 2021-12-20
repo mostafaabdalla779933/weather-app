@@ -5,7 +5,7 @@ import android.content.Context
 import com.example.weather.di.ActivityComponent
 import com.example.weather.di.DaggerActivityComponent
 
-class MyApplication : Application() {
+class MyApplication : Application()  {
 
     companion object{
 

@@ -1,8 +1,6 @@
 package com.example.weather.data.local.sharedpref
 
-import android.content.Context
 import android.content.SharedPreferences
-import com.example.weather.MyApplication
 import com.example.weather.model.Language
 import com.example.weather.model.Setting
 import com.example.weather.model.TemperUnit

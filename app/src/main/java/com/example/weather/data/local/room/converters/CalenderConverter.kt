@@ -13,7 +13,7 @@ class CalenderConverter {
 
 
     @TypeConverter
-    public fun  toCalendar(gson:String ):Calendar{
+    fun  toCalendar(gson:String ):Calendar{
         //val listType = object : TypeToken<List<AlertsItem?>>() {}.type
         return Gson().fromJson(gson,Calendar::class.java);
     }

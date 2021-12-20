@@ -13,14 +13,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weather.MyApplication
 import com.example.weather.databinding.ActivityMainBinding
-import com.example.weather.di.ActivityComponent
-import com.example.weather.di.DaggerActivityComponent
+import com.example.weather.main.viewmodel.MainViewModel
 import java.util.*
 
 
 class  MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
+    lateinit var viewModel : MainViewModel
     val TAG="main"
 
 

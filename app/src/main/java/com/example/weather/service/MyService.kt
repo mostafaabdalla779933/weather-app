@@ -47,7 +47,7 @@ class MyService : JobIntentService() {
 
         (application as MyApplication).activiyComponent.getLocalRepo()
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             raiseNotification()
         }
 

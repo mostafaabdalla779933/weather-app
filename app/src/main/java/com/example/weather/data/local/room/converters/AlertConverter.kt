@@ -11,13 +11,13 @@ import java.util.*
 class AlertConverter {
 
     @TypeConverter
-    public fun toString(list:List<AlertsItem?>? ):String?{
+    fun toString(list:List<AlertsItem?>? ):String?{
         return Gson().toJson(list);
     }
 
 
     @TypeConverter
-    public fun  toAlets(gson:String? ):List<AlertsItem?>?{
+    fun  toAlets(gson:String? ):List<AlertsItem?>?{
         val listType = object : TypeToken<List<AlertsItem?>>() {}.type
         return Gson().fromJson(gson,listType)
     }

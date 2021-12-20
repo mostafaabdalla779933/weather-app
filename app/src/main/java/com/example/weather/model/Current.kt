@@ -1,7 +1,10 @@
 package com.example.weather.model
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Current(
         var sunrise: Double? = null,
         var temp: Double? = null,
@@ -18,4 +21,4 @@ data class Current(
         var humidity: Double? = null,
         @field:SerializedName("wind_speed")
         var windSpeed: Float? = null
-)
+):Parcelable

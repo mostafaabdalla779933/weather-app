@@ -3,10 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="350dp"
-        android:layout_height="400dp"
-        android:minWidth="350dp"
-        android:minHeight="400dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="#77C7EC">
 
         <TextView
@@ -15,7 +13,7 @@
             android:layout_height="125dp"
             android:layout_marginTop="24dp"
             android:gravity="center"
-            android:text="36 c"
+            tools:text="36 c"
             android:textColor="@color/black"
             android:textSize="40sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -36,19 +34,20 @@
 
         <ImageView
             android:id="@+id/imageicon"
-            android:layout_width="150dp"
-            android:layout_height="122dp"
+            android:layout_width="120dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtdescription" />
 
         <ImageView
             android:id="@+id/cloudimage"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -59,33 +58,29 @@
             android:id="@+id/txtcloud"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="0dp"
             android:gravity="center"
             android:text="@string/cloud"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cloudimage"
-            tools:layout_editor_absoluteX="21dp" />
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/cloudimage"
+            app:layout_constraintStart_toStartOf="@+id/cloudimage"
+            app:layout_constraintTop_toBottomOf="@+id/cloudimage" />
 
         <TextView
             android:id="@+id/cloud"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginLeft="20dp"
-            android:textColor="@color/black"
             android:gravity="center"
             android:text="75%"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtcloud"
-            tools:layout_editor_absoluteX="21dp" />
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/txtcloud"
+            app:layout_constraintStart_toStartOf="@+id/txtcloud"
+            app:layout_constraintTop_toBottomOf="@+id/txtcloud" />
 
         <ImageView
             android:id="@+id/humidityimage"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             app:tint="#FFC107"
             app:layout_constraintStart_toStartOf="parent"
@@ -96,32 +91,29 @@
             android:id="@+id/txthumidity"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
             android:gravity="center"
             android:text="@string/humidity"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/humidityimage"
-            tools:layout_editor_absoluteX="25dp" />
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/humidityimage"
+            app:layout_constraintStart_toStartOf="@+id/humidityimage"
+            app:layout_constraintTop_toBottomOf="@+id/humidityimage" />
 
         <TextView
             android:id="@+id/humidity"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
             android:gravity="center"
-            android:text="100"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txthumidity"
-            tools:layout_editor_absoluteX="25dp" />
+            tools:text="100"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/txthumidity"
+            app:layout_constraintStart_toStartOf="@+id/txthumidity"
+            app:layout_constraintTop_toBottomOf="@+id/txthumidity" />
 
         <ImageView
             android:id="@+id/ultraimage"
             android:layout_width="80dp"
             android:layout_height="40dp"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/humidity"
@@ -132,25 +124,23 @@
             android:id="@+id/txtultra"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
             android:gravity="center"
             android:text="@string/ultra_voilt"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ultraimage"
-            tools:layout_editor_absoluteX="25dp" />
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/ultraimage"
+            app:layout_constraintStart_toStartOf="@+id/ultraimage"
+            app:layout_constraintTop_toBottomOf="@+id/ultraimage" />
 
         <TextView
             android:id="@+id/ultra"
             android:layout_width="80dp"
-            android:layout_height="20dp"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
+            android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="100"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtultra"
-            tools:layout_editor_absoluteX="25dp" />
+            tools:text="100"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/txtultra"
+            app:layout_constraintStart_toStartOf="@+id/txtultra"
+            app:layout_constraintTop_toBottomOf="@+id/txtultra" />
 
         <ImageView
             android:id="@+id/visibilityimage"
@@ -158,7 +148,6 @@
             android:layout_height="40dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/visibility"
@@ -168,27 +157,23 @@
             android:id="@+id/txtvisibility"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/black"
-            android:layout_marginRight="20dp"
             android:gravity="center"
             android:text="@string/visibility"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/visibilityimage"
-            tools:layout_editor_absoluteX="25dp" />
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/visibilityimage"
+            app:layout_constraintStart_toStartOf="@+id/visibilityimage"
+            app:layout_constraintTop_toBottomOf="@+id/visibilityimage" />
 
         <TextView
             android:id="@+id/visibility"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/black"
-            android:layout_marginRight="20dp"
             android:gravity="center"
             android:text="100"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtvisibility"
-            tools:layout_editor_absoluteX="25dp" />
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/txtvisibility"
+            app:layout_constraintStart_toStartOf="@+id/txtvisibility"
+            app:layout_constraintTop_toBottomOf="@+id/txtvisibility" />
 
         <ImageView
             android:id="@+id/pressureimage"
@@ -196,34 +181,31 @@
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/visibility"
             app:srcCompat="@drawable/gauge"
             app:tint="#3F51B5" />
+
         <TextView
             android:id="@+id/txtpressure"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/black"
-            android:layout_marginRight="20dp"
             android:gravity="center"
             android:text="@string/pressure"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/pressureimage"
-            tools:layout_editor_absoluteX="25dp" />
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/pressureimage"
+            app:layout_constraintStart_toStartOf="@+id/pressureimage"
+            app:layout_constraintTop_toBottomOf="@+id/pressureimage" />
 
         <TextView
             android:id="@+id/pressure"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/black"
-            android:layout_marginRight="20dp"
             android:gravity="center"
-            android:text="100"
-            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="100"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/txtpressure"
+            app:layout_constraintStart_toStartOf="@+id/txtpressure"
             app:layout_constraintTop_toBottomOf="@+id/txtpressure" />
 
         <ImageView
@@ -232,7 +214,6 @@
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pressure"
             app:srcCompat="@drawable/wind"
@@ -242,25 +223,22 @@
             android:id="@+id/txtwind"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:textColor="@color/black"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
             android:gravity="center"
             android:text="@string/wind"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/windimage"
-            tools:layout_editor_absoluteX="25dp" />
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/windimage"
+            app:layout_constraintStart_toStartOf="@+id/windimage"
+            app:layout_constraintTop_toBottomOf="@+id/windimage" />
 
         <TextView
             android:id="@+id/wind"
             android:layout_width="80dp"
             android:layout_height="20dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/black"
-            android:layout_marginRight="20dp"
             android:gravity="center"
-            android:text="100"
-            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="100"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/txtwind"
+            app:layout_constraintStart_toStartOf="@+id/txtwind"
             app:layout_constraintTop_toBottomOf="@+id/txtwind" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 <!--</androidx.cardview.widget.CardView>-->

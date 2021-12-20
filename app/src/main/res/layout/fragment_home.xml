@@ -9,7 +9,8 @@
 
 
 <ScrollView  android:layout_height="wrap_content"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:paddingBottom="@dimen/_10sdp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -90,7 +91,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:lottie_autoPlay="true"
-                    app:lottie_loop="true"/>
+                    app:lottie_loop="true" />
 
 
                 <com.airbnb.lottie.LottieAnimationView
@@ -98,7 +99,6 @@
                     android:layout_width="80dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -109,33 +109,29 @@
                     android:id="@+id/txtcloud"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="0dp"
                     android:gravity="center"
                     android:text="@string/cloud"
                     android:textColor="@color/black"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cloudimage"
-                    tools:layout_editor_absoluteX="21dp" />
+                    app:layout_constraintEnd_toEndOf="@+id/cloudimage"
+                    app:layout_constraintStart_toStartOf="@+id/cloudimage"
+                    app:layout_constraintTop_toBottomOf="@+id/cloudimage" />
 
                 <TextView
                     android:id="@+id/cloud"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="20dp"
                     android:gravity="center"
-                    android:text="75%"
                     android:textColor="@color/black"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txtcloud"
+                    app:layout_constraintStart_toStartOf="@+id/txtcloud"
                     app:layout_constraintTop_toBottomOf="@+id/txtcloud"
-                    tools:layout_editor_absoluteX="21dp" />
+                    tools:text="75%" />
 
                 <ImageView
                     android:id="@+id/humidityimage"
                     android:layout_width="80dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cloud"
@@ -146,32 +142,30 @@
                     android:id="@+id/txthumidity"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="20dp"
                     android:gravity="center"
                     android:text="@string/humidity"
                     android:textColor="@color/black"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/humidityimage"
-                    tools:layout_editor_absoluteX="25dp" />
+                    app:layout_constraintEnd_toEndOf="@+id/humidityimage"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="@+id/humidityimage"
+                    app:layout_constraintTop_toBottomOf="@+id/humidityimage" />
 
                 <TextView
                     android:id="@+id/humidity"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="20dp"
                     android:gravity="center"
-                    android:text="100"
                     android:textColor="@color/black"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txthumidity"
+                    app:layout_constraintStart_toStartOf="@+id/txthumidity"
                     app:layout_constraintTop_toBottomOf="@+id/txthumidity"
-                    tools:layout_editor_absoluteX="25dp" />
+                    tools:text="100" />
 
                 <ImageView
                     android:id="@+id/ultraimage"
                     android:layout_width="80dp"
                     android:layout_height="40dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/humidity"
@@ -182,7 +176,7 @@
                     android:id="@+id/txtultra"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginStart="20dp"
                     android:gravity="center"
                     android:text="@string/ultra_voilt"
                     android:textColor="@color/black"
@@ -194,13 +188,12 @@
                     android:id="@+id/ultra"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginLeft="20dp"
                     android:gravity="center"
-                    android:text="100"
                     android:textColor="@color/black"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txtultra"
+                    app:layout_constraintStart_toStartOf="@+id/txtultra"
                     app:layout_constraintTop_toBottomOf="@+id/txtultra"
-                    tools:layout_editor_absoluteX="25dp" />
+                    tools:text="100" />
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/visibilityimage"
@@ -208,37 +201,32 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:lottie_autoPlay="true"
-                    app:lottie_loop="true"/>
+                    app:lottie_loop="true" />
 
                 <TextView
                     android:id="@+id/txtvisibility"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
                     android:gravity="center"
                     android:text="@string/visibility"
                     android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/visibilityimage"
-                    tools:layout_editor_absoluteX="25dp" />
+                    app:layout_constraintEnd_toEndOf="@+id/visibilityimage"
+                    app:layout_constraintStart_toStartOf="@+id/visibilityimage"
+                    app:layout_constraintTop_toBottomOf="@+id/visibilityimage" />
 
                 <TextView
                     android:id="@+id/visibility"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
                     android:gravity="center"
-                    android:text="100"
                     android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/txtvisibility"
+                    app:layout_constraintStart_toStartOf="@+id/txtvisibility"
                     app:layout_constraintTop_toBottomOf="@+id/txtvisibility"
-                    tools:layout_editor_absoluteX="25dp" />
+                    tools:text="100" />
 
                 <ImageView
                     android:id="@+id/pressureimage"
@@ -246,7 +234,6 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/visibility"
                     app:srcCompat="@drawable/gauge"
@@ -256,26 +243,23 @@
                     android:id="@+id/txtpressure"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
                     android:gravity="center"
                     android:text="@string/pressure"
                     android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/pressureimage"
-                    tools:layout_editor_absoluteX="25dp" />
+                    app:layout_constraintEnd_toEndOf="@+id/pressureimage"
+                    app:layout_constraintStart_toStartOf="@+id/pressureimage"
+                    app:layout_constraintTop_toBottomOf="@+id/pressureimage" />
 
                 <TextView
                     android:id="@+id/pressure"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
                     android:gravity="center"
-                    android:text="100"
                     android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtpressure" />
+                    app:layout_constraintEnd_toEndOf="@+id/txtpressure"
+                    app:layout_constraintStart_toStartOf="@+id/txtpressure"
+                    app:layout_constraintTop_toBottomOf="@+id/txtpressure"
+                    tools:text="100" />
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/windimage"
@@ -283,44 +267,40 @@
                     android:layout_height="40dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/pressure"
                     app:lottie_autoPlay="true"
-                    app:lottie_loop="true"/>
+                    app:lottie_loop="true" />
 
                 <TextView
                     android:id="@+id/txtwind"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
                     android:gravity="center"
                     android:text="@string/wind"
                     android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/windimage"
-                    tools:layout_editor_absoluteX="25dp" />
+                    app:layout_constraintEnd_toEndOf="@+id/windimage"
+                    app:layout_constraintStart_toStartOf="@+id/windimage"
+                    app:layout_constraintTop_toBottomOf="@+id/windimage" />
 
                 <TextView
                     android:id="@+id/wind"
                     android:layout_width="80dp"
                     android:layout_height="20dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_marginRight="20dp"
                     android:gravity="center"
-                    android:text="100"
                     android:textColor="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txtwind" />
+                    app:layout_constraintEnd_toEndOf="@+id/txtwind"
+                    app:layout_constraintStart_toStartOf="@+id/txtwind"
+                    app:layout_constraintTop_toBottomOf="@+id/txtwind"
+                    tools:text="100" />
 
                 <TextView
                     android:id="@+id/txtCoder"
                     android:layout_width="120dp"
                     android:layout_height="35dp"
+                    android:gravity="center"
                     android:text=""
                     android:textColor="@color/black"
-                    android:gravity="center"
                     app:layout_constraintEnd_toStartOf="@+id/visibilityimage"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/cloudimage"
@@ -337,6 +317,10 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="0dp"
             android:layout_marginRight="20dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/hourlyrow"
+            app:reverseLayout="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/card" />
@@ -346,6 +330,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
+            tools:listitem="@layout/dailyrow"
+            tools:itemCount="7"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclHourly" />

@@ -25,21 +25,11 @@ class MainViewModel(val remoteRepo: IRemoteRepo, val localRepo: ILocalRepo) : Vi
     // fetch data
 
     fun fetchWeather() {
-        val repoflag = localRepo.getRepo()
-        if (repoflag == null) {
 
-            firstTimeLiveData.postValue(true)
-
-        } else if (repoflag == Setting.ROOM) {
-            //room
-            getWeatherFromRoom(localRepo.getTimeZone())
-            Log.i(TAG, "room ")
-
-        } else if (repoflag == Setting.RETROFIT) {
-
-            //retrofit
-            getWeatherFromRetrofit(localRepo.getLat().toString(), localRepo.getLng().toString())
-            Log.i(TAG, "retrofit ")
+        when(localRepo.getRepo()){
+            null->{firstTimeLiveData.postValue(true)}
+            Setting.ROOM->{getWeatherFromRoom(localRepo.getTimeZone())}
+            Setting.RETROFIT->{getWeatherFromRetrofit(localRepo.getLat().toString(), localRepo.getLng().toString())}
         }
     }
 

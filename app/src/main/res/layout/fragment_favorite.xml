@@ -21,20 +21,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="48dp"
-        android:layout_marginRight="48dp"
         android:layout_marginBottom="56dp"
         android:clickable="true"
         app:backgroundTint="#00BCD4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:rippleColor="@color/purple_700"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:focusable="true" />
 
     <SearchView
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:id="@+id/search"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="145dp"
-        android:background="@color/Transblue"/>
+        android:background="@drawable/shape3"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

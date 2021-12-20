@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.weather.databinding.ShowDetailsBinding
 import com.example.weather.model.*
 
-class ShowDetailsFragment(var current: Current?): DialogFragment(){
+class ShowDetailsFragment: DialogFragment(){
 
     lateinit var binding:ShowDetailsBinding
 
@@ -22,7 +22,14 @@ class ShowDetailsFragment(var current: Current?): DialogFragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-        applyDatatoScreen(current)
+        dialog?.apply {
+            window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        }
+
+        arguments?.let {
+            applyDatatoScreen(it.get(CURRENT) as Current)
+        }
+
 
         return binding.root
     }
@@ -50,9 +57,9 @@ class ShowDetailsFragment(var current: Current?): DialogFragment(){
             txtdescription.text=it?.weather?.get(0)?.description
         }
         Glide.with(requireActivity().applicationContext).load(setImgLottie(it?.weather?.get(0)?.icon!!)).into(binding.imageicon)
+    }
 
-
-
-
+    companion object{
+        const val CURRENT="current"
     }
 }

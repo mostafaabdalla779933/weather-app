@@ -12,20 +12,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager.widget.ViewPager
+import androidx.navigation.fragment.findNavController
 import com.example.weather.MyApplication
+import com.example.weather.R
 import com.example.weather.databinding.FragmentSettingBinding
 import com.example.weather.data.remote.location.GetLocation
 import com.example.weather.data.remote.location.LocationHelper
-import com.example.weather.data.repos.LocalRepo
 import com.example.weather.data.repos.LocationRepo
 import com.example.weather.fragments.setting.viewmodel.SettingViewModel
 import com.example.weather.fragments.setting.viewmodel.SettingViewModelFactory
-import com.example.weather.main.view.MainActivity
 import com.example.weather.main.viewmodel.MainViewModel
 import com.example.weather.main.viewmodel.MainViewModelFactory
-import com.example.weather.map.MapActivity
 import com.example.weather.model.Language
 import com.example.weather.model.TemperUnit
 import com.example.weather.model.WindSpeed
@@ -58,33 +57,26 @@ class SettingFragment : Fragment(), GetLocation {
         setDefaulSettings()
 
         binding.btnmap.setOnClickListener {
-            requireActivity().startActivity(Intent(this.context, MapActivity::class.java).putExtra("from", Tag))
+            findNavController().navigate(R.id.action_main_fragment_to_maps_fragment, bundleOf("from" to Tag))
         }
 
         binding.btngps.setOnClickListener {
-
             settingViewModel.getLocation()
-
         }
 
         //******************************chaecked**************************************//
 
         binding.enable.setOnClickListener {
-
             settingViewModel.putNotification(true)
         }
 
-
         binding.disable.setOnClickListener {
-
             settingViewModel.putNotification(false)
         }
-
 
         //*******
         binding.arabic.setOnClickListener {
             settingViewModel.putlanguge(Language.ARABIC)
-
             settingViewModel.setLocale("ar", requireContext(), requireActivity())
         }
 
@@ -95,14 +87,12 @@ class SettingFragment : Fragment(), GetLocation {
 
         ///***********
         binding.kelvin.setOnClickListener {
-
             settingViewModel.putTemperUnit(TemperUnit.KELVIN)
         }
         binding.celsius.setOnClickListener {
             settingViewModel.putTemperUnit(TemperUnit.CELSIUS)
         }
         binding.farhrenheit.setOnClickListener {
-
             settingViewModel.putTemperUnit(TemperUnit.FAHRENHEIT)
         }
 
@@ -113,10 +103,8 @@ class SettingFragment : Fragment(), GetLocation {
         }
         binding.mileperhour.setOnClickListener {
             settingViewModel.putWindSpeed(WindSpeed.MPERHOUR)
-
         }
         //*****************************************************************************//
-
 
         return binding.root
     }

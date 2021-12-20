@@ -1,16 +1,13 @@
  package com.example.weather.reciver
 
-import android.app.Application
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
-import com.example.weather.data.local.sharedpref.ISharedprefer
 import com.example.weather.model.AlertData
 import com.example.weather.service.MyService
 import com.example.weather.util.AlarmUtil
-import com.example.weather.util.NotificationUtil
 
 class MyReceiver : BroadcastReceiver() {
     val TAG="main"

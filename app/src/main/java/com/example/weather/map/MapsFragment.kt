@@ -10,10 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.weather.MyApplication
 import com.example.weather.R
-import com.example.weather.data.repos.LocalRepo
-import com.example.weather.data.repos.RemoteRepo
 import com.example.weather.databinding.FragmentMapsBinding
 import com.example.weather.databinding.SnackbarBinding
 import com.example.weather.fragments.favorite.view.FavoriteFragment
@@ -24,10 +23,7 @@ import com.example.weather.main.viewmodel.MainViewModel
 import com.example.weather.main.viewmodel.MainViewModelFactory
 import com.example.weather.model.Favourite
 import com.example.weather.model.isOnline
-
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
@@ -64,6 +60,7 @@ class MapsFragment : Fragment(){
     lateinit var binding: FragmentMapsBinding
     lateinit var viewModel: MainViewModel
     lateinit var viewModelTest:FavouriteViewModel
+    lateinit var snackbar :Snackbar
 
     val TAG="main"
     var from : String?=""
@@ -72,12 +69,11 @@ class MapsFragment : Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var bundle: Bundle? =this.arguments
+        arguments?.let {
+            from= it.getString("from")
+        }
 
-        from=bundle?.getString("from")
-
-        Log.i(TAG, "onCreateView: "+bundle?.getString("from"))
-
+        Log.i(TAG, "onCreateView: "+ from)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -103,34 +99,29 @@ class MapsFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_INDEFINITE)
 
 
-        mapFragment?.getMapAsync(object :OnMapReadyCallback{
-            override fun onMapReady(googleMap: GoogleMap?) {
+        mapFragment?.getMapAsync { googleMap ->
+            googleMap!!.setOnMapClickListener { latLng ->
+                if (isOnline(MyApplication.getContext())) {
 
-                googleMap!!.setOnMapClickListener(object :GoogleMap.OnMapClickListener{
-                    override fun onMapClick(latLng: LatLng?) {
+                    var marker: MarkerOptions = MarkerOptions()
 
-                        if(isOnline(MyApplication.getContext())) {
+                    marker.position(latLng!!)
+                    showSaveLocationSnackbar(latLng)
 
-                            var marker: MarkerOptions = MarkerOptions()
+                    marker.title("" + latLng.latitude + ":" + latLng.longitude)
 
-                            marker.position(latLng!!)
-                            showSaveLocationSnackbar(latLng)
+                    googleMap.clear()
 
-                            marker.title("" + latLng.latitude + ":" + latLng.longitude)
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5f))
 
-                            googleMap.clear()
+                    googleMap.addMarker(marker)
 
-                            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5f))
-
-                            googleMap.addMarker(marker)
-
-                        }
-                    }
-                })
+                }
             }
-        })
+        }
     }
 
 
@@ -146,28 +137,43 @@ class MapsFragment : Fragment(){
 
 
     private fun showSaveLocationSnackbar( latLng:LatLng?) {
-        val snackbar = Snackbar.make(binding.root, "", Snackbar.LENGTH_INDEFINITE)
-        val customSnack = layoutInflater.inflate(R.layout.snackbar, null)
-        val snackbarBinding = SnackbarBinding.bind(customSnack)
-        //snackbar.view.setBackgroundColor(R.color.black)
+      //  FavRowBinding.inflate(LayoutInflater.from(parent.context),parent,false)
+     //   val customSnack = layoutInflater.inflate(R.layout.snackbar, null)
+        val snackbarBinding = SnackbarBinding.bind(layoutInflater.inflate(R.layout.snackbar, null))
         val snackbarLayout = snackbar.view as (Snackbar.SnackbarLayout)
         // Set padding to snackbar layout
         snackbarLayout.setPadding(0, 0, 0, 0)
         // Set the name of selected location
-        var geocoder=Geocoder(activity?.applicationContext)
-        var list:List<Address> = geocoder.getFromLocation(latLng?.latitude!!, latLng?.longitude!!,1)
-        val favName=list.get(0).countryName
-        snackbarBinding.txt.text = favName
-        // Save selected location as favorite place
-        snackbarBinding.addbtn .setOnClickListener {
-            when(from){
-                SettingFragment.Tag->{viewModel.setLocationFromMap(latLng.latitude.toFloat(),latLng.longitude.toFloat()) }
+        val favName: String?
+        try {
+            val geocoder = Geocoder(activity?.applicationContext)
+            val list: List<Address> =
+                geocoder.getFromLocation(latLng?.latitude!!, latLng?.longitude!!, 1)
+            favName = list[0].countryName
 
-                FavoriteFragment.Tag->{viewModelTest.addFvaouriteToRoom(Favourite(favName,latLng?.longitude!!, latLng.latitude,null,null), requireActivity().applicationContext)}
+            snackbarBinding.txt.text = favName
+            snackbarBinding.addbtn .setOnClickListener {
+                when(from){
+                    SettingFragment.Tag->{viewModel.setLocationFromMap(latLng?.latitude?.toFloat(),latLng.longitude.toFloat()) }
+
+                    FavoriteFragment.Tag->{viewModelTest.addFvaouriteToRoom(Favourite(favName?:"",latLng?.longitude!!, latLng.latitude,null,null), requireContext())}
+                }
+                snackbar.dismiss()
+                findNavController().popBackStack()
             }
-            requireActivity().finish()
+            snackbarLayout.addView(snackbarBinding.root)
+            snackbar.show()
+        }catch (e:Exception){
+
         }
-        snackbarLayout.addView(customSnack)
-        snackbar.show()
+
     }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if(snackbar.isShown)
+          snackbar.dismiss()
+    }
+
 }
