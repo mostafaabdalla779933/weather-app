@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import com.example.weather.R
 import com.example.weather.databinding.FragmentMainBinding
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MainFragment:Fragment() {
@@ -28,7 +28,7 @@ class MainFragment:Fragment() {
 
     private fun initViewPager() {
         binding.viewpager.apply {
-            adapter= MainPagerAdapter(requireActivity())
+            adapter= MainPagerAdapter(this@MainFragment)
         }
 
         TabLayoutMediator(binding.tabLayout, binding.viewpager) { tab, position ->
@@ -40,6 +40,16 @@ class MainFragment:Fragment() {
             }
         }.attach()
 
+        val tabStrip = binding.tabLayout.getChildAt(0) as LinearLayout
+
+        for (i in 0 until tabStrip.childCount) {
+            tabStrip.getChildAt(i).setOnLongClickListener {
+             //   Toast.makeText(requireContext(), "Tab clicked", Toast.LENGTH_SHORT).show()
+                true
+            }
+        }
+
+
 //        binding.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
 //            override fun onTabReselected(tab: TabLayout.Tab?) {}
 //            override fun onTabUnselected(tab: TabLayout.Tab?) {}
@@ -50,9 +60,4 @@ class MainFragment:Fragment() {
 //        })
     }
 
-
-
-
-    companion object {
-    }
 }

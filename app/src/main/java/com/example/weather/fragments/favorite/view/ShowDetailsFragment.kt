@@ -4,8 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import com.bumptech.glide.Glide
+import androidx.fragment.app.setFragmentResult
+import com.example.weather.R
 import com.example.weather.databinding.ShowDetailsBinding
 import com.example.weather.model.*
 
@@ -23,22 +27,27 @@ class ShowDetailsFragment: DialogFragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
         dialog?.apply {
-            window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            window?.setBackgroundDrawable(ResourcesCompat.getDrawable(resources,R.drawable.trans,null))
+            window?.clearFlags(WindowManager.LayoutParams.ANIMATION_CHANGED)
+            setCancelable(true)
         }
 
         arguments?.let {
-            applyDatatoScreen(it.get(CURRENT) as Current)
+            applyDataScreen(it.get(CURRENT) as Current)
         }
-
-
         return binding.root
     }
 
+    override fun getTheme(): Int {
+        super.getTheme()
+        return R.style.DialogStyle
+    }
 
-    fun applyDatatoScreen(it:Current?){
+
+    private fun applyDataScreen(it:Current?){
 
         binding.apply {
-
             cloud.text=it?.clouds?.toString()
             visibility.text=it?.visibility?.toString()
             ultra.text=it?.uvi?.toString()
@@ -56,7 +65,11 @@ class ShowDetailsFragment: DialogFragment(){
             }
             txtdescription.text=it?.weather?.get(0)?.description
         }
-        Glide.with(requireActivity().applicationContext).load(setImgLottie(it?.weather?.get(0)?.icon!!)).into(binding.imageicon)
+    }
+
+    override fun onDestroy() {
+        setFragmentResult("show", bundleOf("show" to "mostafa"))
+        super.onDestroy()
     }
 
     companion object{

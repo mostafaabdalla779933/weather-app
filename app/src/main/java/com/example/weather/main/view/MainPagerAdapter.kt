@@ -8,7 +8,7 @@ import com.example.weather.fragments.favorite.view.FavoriteFragment
 import com.example.weather.fragments.home.view.HomeFragment
 import com.example.weather.fragments.setting.view.SettingFragment
 
-class MainPagerAdapter(var fragmentActivity: FragmentActivity):  FragmentStateAdapter(fragmentActivity) {
+class MainPagerAdapter(var fragment: Fragment):  FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment = when (position) {
         0 -> HomeFragment()

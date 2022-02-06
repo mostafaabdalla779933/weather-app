@@ -31,8 +31,8 @@
     <string name="OK">ok</string>
     <string name="please_set_your_loction">please set your loction</string>
     <string name="go_to_setting">go to setting</string>
-    <string name="setting">setting</string>
-    <string name="favorite">favorite</string>
+    <string name="setting">Setting</string>
+    <string name="favorite">Favorite</string>
     <string name="alerts">Alerts</string>
     <string name="home">Home</string>
     <string name="no_internet_connection">no internet connection</string>

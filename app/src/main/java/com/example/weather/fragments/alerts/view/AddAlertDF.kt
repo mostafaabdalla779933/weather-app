@@ -15,11 +15,12 @@ import com.example.weather.fragmentsdatetime.TimeFragment
 import com.example.weather.model.*
 import java.util.*
 
-class AddAlertDF(var onAddAlert:(AlertData)->Unit ): DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class AddAlertDF: DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
 
     lateinit var binding:AddAlertDialogBinding
     lateinit var calendar: Calendar
+    lateinit var onAddAlert:(AlertData)->Unit
     val TAG="main"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,12 +30,17 @@ class AddAlertDF(var onAddAlert:(AlertData)->Unit ): DialogFragment(), DatePicke
         calendar= Calendar.getInstance()
 
         binding.btnDate.setOnClickListener(View.OnClickListener {
-            DateFragment(this).show(parentFragmentManager, "date");
+            DateFragment().also { date->
+                date.listener=this
+                date.show(parentFragmentManager, "date")
+            }
         })
 
         binding.btntime.setOnClickListener(View.OnClickListener {
-
-            TimeFragment(this).show(parentFragmentManager,"time")
+            TimeFragment().also { time->
+                time.listener=this
+                time.show(parentFragmentManager, "date")
+            }
         })
 
         binding.btnsave.setOnClickListener(View.OnClickListener {

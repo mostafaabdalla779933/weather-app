@@ -1,6 +1,7 @@
 package com.example.weather.fragments.home.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -9,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.example.weather.MyApplication
 import com.example.weather.R
 import com.example.weather.databinding.FragmentHomeBinding
+import com.example.weather.main.view.MainFragment
 import com.example.weather.main.viewmodel.MainViewModel
 import com.example.weather.main.viewmodel.MainViewModelFactory
 import com.example.weather.model.*
@@ -56,7 +59,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 
-       // pager = container as ViewPager2
+
         binding.card.visibility=View.INVISIBLE
         binding.firstTime.visibility=View.GONE
 
@@ -84,7 +87,8 @@ class HomeFragment : Fragment() {
 
 
         binding.firstTime.setOnClickListener{
-           // pager.currentItem=3
+          //  Log.i("main", "onCreateView: ${pa}")
+            (parentFragment as MainFragment).binding.viewpager.setCurrentItem(3,true)
         }
 
 

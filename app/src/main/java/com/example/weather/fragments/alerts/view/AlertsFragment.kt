@@ -79,10 +79,12 @@ class AlertsFragment :Fragment()
             adapter=alertAdapter
         }
         binding.floatingActionButton.setOnClickListener {
-
-            AddAlertDF(onAddAlert = {
-                viewMode.addAlarm(it)
-            }).show(parentFragmentManager,"details")
+            AddAlertDF().also { dialog->
+                dialog.onAddAlert={
+                    viewMode.addAlarm(it)
+                }
+                dialog.show(parentFragmentManager,"details")
+            }
         }
         return binding.root
     }

@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.weather.MyApplication
@@ -105,18 +106,12 @@ class MapsFragment : Fragment(){
         mapFragment?.getMapAsync { googleMap ->
             googleMap!!.setOnMapClickListener { latLng ->
                 if (isOnline(MyApplication.getContext())) {
-
                     var marker: MarkerOptions = MarkerOptions()
-
                     marker.position(latLng!!)
                     showSaveLocationSnackbar(latLng)
-
                     marker.title("" + latLng.latitude + ":" + latLng.longitude)
-
                     googleMap.clear()
-
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5f))
-
                     googleMap.addMarker(marker)
 
                 }
@@ -124,49 +119,51 @@ class MapsFragment : Fragment(){
         }
     }
 
+ /*   override fun onMapReady(googleMap: GoogleMap) {
+        googleMap.addMarker(
+                MarkerOptions()
+                        .position(LatLng(0.0, 0.0))
+                        .title("Marker")
+        )
+    }*/
 
+    private fun showSaveLocationSnackbar(latLng:LatLng?){
 
+        SnackbarBinding.bind(layoutInflater.inflate(R.layout.snackbar, null)).let { snackbarBinding ->
+            (snackbar.view as ViewGroup).removeAllViews()
+            (snackbar.view as ViewGroup).addView(snackbarBinding.root)
 
-//    override fun onMapReady(googleMap: GoogleMap) {
-//        googleMap.addMarker(
-//                MarkerOptions()
-//                        .position(LatLng(0.0, 0.0))
-//                        .title("Marker")
-//        )
-//    }
+            snackbar.view.setPadding(20, 10, 20, 30)
+            snackbar.view.setBackgroundResource(R.color.blue)
+            snackbar.view.elevation = 0f
 
+            snackbar.setBackgroundTint(
+                ContextCompat.getColor(requireContext(), android.R.color.transparent)
+            )
 
-    private fun showSaveLocationSnackbar( latLng:LatLng?) {
-      //  FavRowBinding.inflate(LayoutInflater.from(parent.context),parent,false)
-     //   val customSnack = layoutInflater.inflate(R.layout.snackbar, null)
-        val snackbarBinding = SnackbarBinding.bind(layoutInflater.inflate(R.layout.snackbar, null))
-        val snackbarLayout = snackbar.view as (Snackbar.SnackbarLayout)
-        // Set padding to snackbar layout
-        snackbarLayout.setPadding(0, 0, 0, 0)
-        // Set the name of selected location
-        val favName: String?
-        try {
-            val geocoder = Geocoder(activity?.applicationContext)
-            val list: List<Address> =
-                geocoder.getFromLocation(latLng?.latitude!!, latLng?.longitude!!, 1)
-            favName = list[0].countryName
+            var favName = ""
+            try {
+                val geocoder = Geocoder(activity?.applicationContext)
+                val list: List<Address> =
+                    geocoder.getFromLocation(latLng?.latitude!!, latLng?.longitude!!, 1)
+                favName = list[0].countryName
 
-            snackbarBinding.txt.text = favName
-            snackbarBinding.addbtn .setOnClickListener {
-                when(from){
-                    SettingFragment.Tag->{viewModel.setLocationFromMap(latLng?.latitude?.toFloat(),latLng.longitude.toFloat()) }
-
-                    FavoriteFragment.Tag->{viewModelTest.addFvaouriteToRoom(Favourite(favName?:"",latLng?.longitude!!, latLng.latitude,null,null), requireContext())}
+                snackbarBinding.txt.text = favName
+                snackbarBinding.addbtn.setOnClickListener {
+                    when (from) {
+                        SettingFragment.Tag -> {
+                            viewModel.setLocationFromMap(latLng?.latitude?.toFloat(), latLng.longitude.toFloat())
+                        }
+                        FavoriteFragment.Tag -> {
+                            viewModelTest.addFvaouriteToRoom(Favourite(favName, latLng?.longitude!!, latLng.latitude, null, null), requireContext())
+                        }
+                    }
+                    snackbar.dismiss()
+                    findNavController().popBackStack()
                 }
-                snackbar.dismiss()
-                findNavController().popBackStack()
-            }
-            snackbarLayout.addView(snackbarBinding.root)
-            snackbar.show()
-        }catch (e:Exception){
-
+                snackbar.show()
+            } catch (e: Exception) { }
         }
-
     }
 
 

@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +37,11 @@ class FavoriteFragment : Fragment() {
 
 
         viewModelTest.getFvaouritesRoom()
+        parentFragmentManager.setFragmentResultListener("show",this) { key,bundle->
+            if (key=="show"){
+                Log.i("main", "onCreate: ${bundle.getString("show")}")
+            }
+        }
 
         favoriteAdapter = FavouriteAdapter(mutableListOf(),{
 
@@ -42,6 +49,7 @@ class FavoriteFragment : Fragment() {
         },{
 
             ShowDetailsFragment().also { dialog->
+                dialog.isCancelable =true
                 dialog.arguments = bundleOf(ShowDetailsFragment.CURRENT to it.current)
                 dialog.show(parentFragmentManager,"details")
             }
@@ -87,10 +95,6 @@ class FavoriteFragment : Fragment() {
 
         binding.floatingActionButton.setOnClickListener{
             findNavController().navigate(R.id.maps_fragment, bundleOf("from" to Tag))
-            //val navController = Navigation.findNavController(view)
-            //navController.navigate(R.id.maps_fragment)
-          // childFragmentManager.beginTransaction().replace(R.id.fragment_containers,MapsFragment()).addToBackStack("").commitNowAllowingStateLoss()
-         //  startActivity(Intent(requireActivity(), MapActivity::class.java).putExtra("from",Tag))
         }
 
     }

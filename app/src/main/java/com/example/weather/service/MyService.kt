@@ -59,11 +59,11 @@ class MyService : JobIntentService() {
 
                 localRepo.deleteAlert(alertData)
 
-                var response = remoteRepo.getWeatherFormApi("data/2.5/onecall?lat=${localRepo.getLat()}&lon=${localRepo.getLng()}&exclude=daily,current,hourly,minutely&lang=en&appid=4b296deb770fc941bfd35a28581dc8b7")
+                val response = remoteRepo.getWeatherFormApi("data/2.5/onecall?lat=${localRepo.getLat()}&lon=${localRepo.getLng()}&exclude=daily,current,hourly,minutely&lang=en&appid=4b296deb770fc941bfd35a28581dc8b7")
 
 
-                if (response!!.isSuccessful) {
-                    var alerts = response.body()?.alerts
+                if (response.isSuccessful) {
+                    val alerts = response.body()?.alerts
                     if (!alerts.isNullOrEmpty()) {
                         val data = alerts.filter { e -> e?.description?.isNotEmpty()!! }.take(1)
                         Log.i(TAG, "onStartCommand: " + data.size)
