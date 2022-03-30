@@ -39,6 +39,7 @@
     <string name="set_you_location">حدد موقعك</string>
 
     <string name="no_internet_connection">لا يوجد اتصال بالنت</string>
+    <string name="system">لغة النظام</string>
 
     <string-array name="alert_types">
         <item>temperature</item>

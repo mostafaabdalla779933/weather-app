@@ -2,7 +2,6 @@ package com.example.weather.main.viewmodel
 
 
 import android.location.Location
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weather.MyApplication
@@ -11,21 +10,19 @@ import com.example.weather.data.repos.ILocalRepo
 import com.example.weather.model.DataResponse
 import com.example.weather.model.Setting
 import com.example.weather.model.isOnline
+import com.example.weather.util.locale.LocaleManager
 import kotlinx.coroutines.*
 
 
-class MainViewModel(val remoteRepo: IRemoteRepo, val localRepo: ILocalRepo) : ViewModel() {
+class MainViewModel(private val remoteRepo: IRemoteRepo, val localRepo: ILocalRepo) : ViewModel() {
 
-    var TAG: String = "main"
     var weatherLiveData = MutableLiveData<DataResponse>()
     var firstTimeLiveData = MutableLiveData<Boolean>()
     var erroLive = MutableLiveData<Boolean>()
 
 
     // fetch data
-
     fun fetchWeather() {
-
         when(localRepo.getRepo()){
             null->{firstTimeLiveData.postValue(true)}
             Setting.ROOM->{getWeatherFromRoom(localRepo.getTimeZone())}
@@ -43,9 +40,9 @@ class MainViewModel(val remoteRepo: IRemoteRepo, val localRepo: ILocalRepo) : Vi
 
     ///get weather from retrofit
 
-    fun getWeatherFromRetrofit(lat: String, lon: String) {
+    private fun getWeatherFromRetrofit(lat: String, lon: String) {
 
-        val lang = localRepo.getlanguge()
+        val lang = LocaleManager.getInstance().getLanguage()
 
        
         CoroutineScope(Dispatchers.IO).launch {
@@ -71,7 +68,7 @@ class MainViewModel(val remoteRepo: IRemoteRepo, val localRepo: ILocalRepo) : Vi
     }
 
     ///set weather in room
-    fun setWeatherInRoom(response: DataResponse) {
+    private fun setWeatherInRoom(response: DataResponse) {
         CoroutineScope(Dispatchers.IO).launch {
             localRepo.addWeather(response)
             localRepo.putRepo(Setting.ROOM)
@@ -80,7 +77,7 @@ class MainViewModel(val remoteRepo: IRemoteRepo, val localRepo: ILocalRepo) : Vi
     }
 
 
-    fun getWeatherFromRoom(timezone: String) {
+    private fun getWeatherFromRoom(timezone: String) {
 
         CoroutineScope(Dispatchers.IO).launch {
 

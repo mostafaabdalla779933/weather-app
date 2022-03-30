@@ -51,7 +51,7 @@ class MyService : JobIntentService() {
             raiseNotification()
         }
 
-        var alertData: AlertData = Gson().fromJson(intent?.getStringExtra(AlertData.TAG), AlertData::class.java)
+        val alertData: AlertData = Gson().fromJson(intent?.getStringExtra(AlertData.TAG), AlertData::class.java)
 
 
         CoroutineScope(Dispatchers.IO).launch {

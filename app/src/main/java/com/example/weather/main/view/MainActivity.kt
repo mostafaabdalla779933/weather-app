@@ -2,8 +2,6 @@ package com.example.weather.main.view
 
 import android.content.ComponentName
 import android.content.Intent
-import android.content.res.Configuration
-import android.content.res.Resources
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -11,24 +9,16 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.weather.MyApplication
 import com.example.weather.databinding.ActivityMainBinding
-import com.example.weather.main.viewmodel.MainViewModel
-import java.util.*
 
 
 class  MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
-    lateinit var viewModel : MainViewModel
-    val TAG="main"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-       setLocale((application as MyApplication).activiyComponent.getLocalRepo().getlanguge())
 
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -36,12 +26,12 @@ class  MainActivity : AppCompatActivity() {
         //**************ask permission***********///
          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             //when screen is black but not locked it will light-up
-            setShowWhenLocked(true);
-            setTurnScreenOn(true);
+            setShowWhenLocked(true)
+            setTurnScreenOn(true)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(!Settings.canDrawOverlays(this)) {
-                checkDrawOverAppsPermissionsDialog();
+                checkDrawOverAppsPermissionsDialog()
             }
         }
         runBackgroundPermissions()
@@ -58,7 +48,7 @@ class  MainActivity : AppCompatActivity() {
 
             }.setNegativeButton("No") { dialogInterface, which ->
                 Toast.makeText(applicationContext, "clicked yes", Toast.LENGTH_LONG).show()
-                errorWarningForNotGivingDrawOverAppsPermissions();
+                errorWarningForNotGivingDrawOverAppsPermissions()
 
             }.show()
 
@@ -72,35 +62,27 @@ class  MainActivity : AppCompatActivity() {
             }
     }
 
-     fun runBackgroundPermissions() {
+     private fun runBackgroundPermissions() {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.M) {
             if (Build.BRAND.equals("xiaomi",true) ) {
-                var intent = Intent()
-                intent.setComponent(ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity"))
-                startActivity(intent);
+                val intent = Intent()
+                intent.component = ComponentName("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")
+                startActivity(intent)
             } else if (Build.BRAND.equals("Honor",true) || Build.BRAND.equals("HUAWEI",true)) {
-                var intent = Intent()
-                intent.setComponent(ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity"));
-                startActivity(intent);
+                val intent = Intent()
+                intent.component = ComponentName("com.huawei.systemmanager", "com.huawei.systemmanager.optimize.process.ProtectActivity")
+                startActivity(intent)
             }
         }
     }
 
-    fun drawOverAppPermission (){
+    private fun drawOverAppPermission (){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (!Settings.canDrawOverlays(this)) {
-                var intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-                startActivityForResult(intent, 80);
+                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:$packageName"))
+                startActivityForResult(intent, 80)
             }
         }
-    }
-    fun setLocale(lang:String ) {
-        val resources: Resources = this.getResources()
-        val locale = Locale(lang)
-        Locale.setDefault(locale);
-        val config = Configuration()
-        config.locale = locale
-        resources.updateConfiguration(config, resources.getDisplayMetrics())
     }
 }

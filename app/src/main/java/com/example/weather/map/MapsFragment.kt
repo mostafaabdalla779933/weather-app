@@ -62,8 +62,6 @@ class MapsFragment : Fragment(){
     lateinit var viewModel: MainViewModel
     lateinit var viewModelTest:FavouriteViewModel
     lateinit var snackbar :Snackbar
-
-    val TAG="main"
     var from : String?=""
 
 
@@ -73,8 +71,6 @@ class MapsFragment : Fragment(){
         arguments?.let {
             from= it.getString("from")
         }
-
-        Log.i(TAG, "onCreateView: "+ from)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -106,7 +102,7 @@ class MapsFragment : Fragment(){
         mapFragment?.getMapAsync { googleMap ->
             googleMap!!.setOnMapClickListener { latLng ->
                 if (isOnline(MyApplication.getContext())) {
-                    var marker: MarkerOptions = MarkerOptions()
+                    val marker = MarkerOptions()
                     marker.position(latLng!!)
                     showSaveLocationSnackbar(latLng)
                     marker.title("" + latLng.latitude + ":" + latLng.longitude)

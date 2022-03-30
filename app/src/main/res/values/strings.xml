@@ -38,6 +38,7 @@
     <string name="no_internet_connection">no internet connection</string>
     <string name="hide">hide</string>
     <string name="set_you_location">set you location</string>
+    <string name="system">system</string>
 
 
     <string-array name="alert_types">

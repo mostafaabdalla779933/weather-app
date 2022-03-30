@@ -90,15 +90,6 @@ class LocalRepo(val shared: ISharedprefer,val room:RoomDao) : ILocalRepo {
 
     //****************************shared**********************//
 
-    override fun putlanguge(language: String){
-
-        shared.putlanguge(language)
-    }
-
-    override fun getlanguge(): String{
-
-        return shared.getlanguge()
-    }
 
     override fun putNotification(notificationFlag: Boolean){
 

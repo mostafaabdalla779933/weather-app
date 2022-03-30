@@ -17,8 +17,6 @@ interface ILocalRepo {
     suspend fun addAlert(alert: AlertData)
     suspend fun deleteAlert(alert: AlertData)
     suspend fun getAllAlerts(): Flow<List<AlertData>>
-    fun putlanguge(language: String)
-    fun getlanguge(): String
     fun putNotification(notificationFlag: Boolean)
     fun getNotification(): Boolean
     fun putTemperUnit(temperUnit: String)

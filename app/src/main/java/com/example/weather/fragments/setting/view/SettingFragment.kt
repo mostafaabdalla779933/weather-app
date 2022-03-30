@@ -25,9 +25,10 @@ import com.example.weather.fragments.setting.viewmodel.SettingViewModel
 import com.example.weather.fragments.setting.viewmodel.SettingViewModelFactory
 import com.example.weather.main.viewmodel.MainViewModel
 import com.example.weather.main.viewmodel.MainViewModelFactory
-import com.example.weather.model.Language
+import com.example.weather.model.Setting
 import com.example.weather.model.TemperUnit
 import com.example.weather.model.WindSpeed
+import com.example.weather.util.locale.LocaleManager
 
 
 class SettingFragment : Fragment(), GetLocation {
@@ -36,7 +37,6 @@ class SettingFragment : Fragment(), GetLocation {
     lateinit var binding: FragmentSettingBinding
     lateinit var settingViewModel: SettingViewModel
     lateinit var mainViewModel: MainViewModel
-   // lateinit var pager: ViewPager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,13 +76,24 @@ class SettingFragment : Fragment(), GetLocation {
 
         //*******
         binding.arabic.setOnClickListener {
-            settingViewModel.putlanguge(Language.ARABIC)
-            settingViewModel.setLocale("ar", requireContext(), requireActivity())
+            if(LocaleManager.getInstance().getLanguage()== LocaleManager.EN) {
+                settingViewModel.putRepo(Setting.RETROFIT)
+                LocaleManager.changeAppLang(requireActivity())
+            }
         }
 
         binding.english.setOnClickListener {
-            settingViewModel.putlanguge(Language.ENGLISH)
-            settingViewModel.setLocale("en", requireContext(), requireActivity())
+            if(LocaleManager.getInstance().getLanguage()== LocaleManager.AR) {
+                settingViewModel.putRepo(Setting.RETROFIT)
+                LocaleManager.changeAppLang(requireActivity())
+            }
+        }
+
+        binding.system.setOnClickListener {
+            if(!LocaleManager.getInstance().isFollowingSystemLocale()){
+                settingViewModel.putRepo(Setting.RETROFIT)
+                LocaleManager.changeAppLangToSystem(requireActivity())
+            }
         }
 
         ///***********
@@ -142,10 +153,16 @@ class SettingFragment : Fragment(), GetLocation {
                 TemperUnit.FAHRENHEIT -> farhrenheit.isChecked = true
                 TemperUnit.KELVIN -> kelvin.isChecked = true
             }
-            when (settingViewModel.getlanguge()) {
-                Language.ENGLISH -> english.isChecked = true
-                Language.ARABIC -> arabic.isChecked = true
+
+            if(LocaleManager.getInstance().isFollowingSystemLocale()){
+                system.isChecked = true
+            }else{
+                when (LocaleManager.getInstance().getLanguage()) {
+                    LocaleManager.EN -> english.isChecked = true
+                    LocaleManager.AR -> arabic.isChecked = true
+                }
             }
+
             when (settingViewModel.getWindSpeed()) {
 
                 WindSpeed.MPERSEC -> mpersec.isChecked = true
@@ -160,7 +177,6 @@ class SettingFragment : Fragment(), GetLocation {
 
     override fun onLoctionResult(location: Location) {
         mainViewModel.setLocation(location)
-       // pager.currentItem = 0
     }
 }
 

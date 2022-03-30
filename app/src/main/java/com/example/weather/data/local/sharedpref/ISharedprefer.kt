@@ -1,8 +1,6 @@
 package com.example.weather.data.local.sharedpref
 
 interface ISharedprefer {
-    fun putlanguge(language: String)
-    fun getlanguge(): String
     fun putNotification(notificationFlag: Boolean)
     fun getNotification(): Boolean
     fun putTemperUnit(temperUnit: String)

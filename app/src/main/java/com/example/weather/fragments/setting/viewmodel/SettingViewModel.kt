@@ -5,18 +5,13 @@ import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.lifecycle.ViewModel
-import com.example.weather.data.local.sharedpref.Sharedprefer
 import com.example.weather.data.repos.ILocalRepo
 import com.example.weather.data.repos.ILocationRepo
-import com.example.weather.data.repos.LocalRepo
 import com.example.weather.model.Setting
 import java.util.*
 
 
 class SettingViewModel(val locationRepoInterface: ILocationRepo,val repo:ILocalRepo): ViewModel(){
-    val TAG="main"
-
-
 
     fun getLocation()=locationRepoInterface.getLoction()
 
@@ -27,22 +22,13 @@ class SettingViewModel(val locationRepoInterface: ILocationRepo,val repo:ILocalR
         Locale.setDefault(locale);
         val config = Configuration()
         config.locale = locale
-        resources.updateConfiguration(config, resources.displayMetrics);
-        activity.finish()
-        activity.startActivity(activity.intent)
+        resources.updateConfiguration(config, resources.displayMetrics)
+        activity.recreate()
+//        activity.finish()
+//        activity.startActivity(activity.intent)
         putRepo(Setting.RETROFIT)
         //(activity as MainActivity).recreate()
     }
-    fun putlanguge(language: String){
-
-        repo.putlanguge(language)
-    }
-
-    fun getlanguge(): String{
-
-        return repo.getlanguge()
-    }
-
     fun putNotification(notificationFlag: Boolean){
 
         repo.putNotification(notificationFlag)
