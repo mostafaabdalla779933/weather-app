@@ -10,6 +10,15 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
+    signingConfigs {
+        release {
+            storeFile file("/weatherKey.jks")
+            storePassword signing.storePassword
+            keyAlias signing.keyAlias
+            keyPassword signing.keyPassword
+        }
+    }
+
     defaultConfig {
         applicationId "com.example.weather"
         minSdkVersion 23
@@ -32,7 +41,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
