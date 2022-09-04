@@ -20,7 +20,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.example.weather"
+        applicationId "com.weathery.weather"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
