@@ -33,6 +33,7 @@
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
         <activity android:name=".splash.SplashActivity"
             android:theme="@style/Theme.Design.NoActionBar"
+            android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,8 +68,17 @@
         <activity
             android:name=".main.view.MainActivity"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.NoActionBar">
 
+            <intent-filter>
+                <data
+                    android:host="weather.page.link"
+                    android:scheme="https" />
+                <data
+                    android:host="weather.page.link/main"
+                    android:scheme="https" />
+            </intent-filter>
         </activity>
 
         <service

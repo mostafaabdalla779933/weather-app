@@ -11,5 +11,6 @@
     <color name="blue">#03A9F4</color>
     <color name="Transblue">#6003A9F4</color>
     <color name="my_spinner_text_color">#000000</color>
+    <color name="med_orange">#FE7900</color>
 
 </resources>

@@ -10,12 +10,26 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.weathery.weather.databinding.ActivityMainBinding
+import com.weathery.weather.dynamic.DeepLinkingUtil
+import com.weathery.weather.util.showMessage
 
 
 class  MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
 
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        setIntent(intent)
+        intent?.let {
+            DeepLinkingUtil.handleIntent(intent.data, this) { uri ->
+                this.showMessage("2 ${uri.toString()}")
+            }
+        }
+
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +49,18 @@ class  MainActivity : AppCompatActivity() {
             }
         }
         runBackgroundPermissions()
+        firebaseDynamicLinks(savedInstanceState)
 
     }
 
+    private fun firebaseDynamicLinks(savedInstanceState: Bundle?){
+
+        //Handel deep links from dynamic links
+        DeepLinkingUtil.listenToDynamicLinks(savedInstanceState, intent, this) { uri ->
+            this.showMessage("1 ${uri.toString()}")
+        }
+        DeepLinkingUtil.handleNestedIntent(intent, this)
+    }
 
     //methods permissions
     private fun checkDrawOverAppsPermissionsDialog(){
