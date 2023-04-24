@@ -1,7 +1,6 @@
 package com.weathery.weather.fragments.home.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.weathery.weather.MyApplication
 import com.weathery.weather.R
 import com.weathery.weather.databinding.FragmentHomeBinding
@@ -22,7 +20,6 @@ import com.google.android.material.snackbar.Snackbar
 
 class HomeFragment : Fragment() {
 
-    val TAG="main"
     lateinit var binding: FragmentHomeBinding
     lateinit var viewModel: MainViewModel
     lateinit var dailyAdapter: DailyAdapter
@@ -35,7 +32,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
 
-        val app = (requireActivity().application as com.weathery.weather.MyApplication).activiyComponent
+        val app = (requireActivity().application as MyApplication).activiyComponent
 
         //Dagger
        viewModel = ViewModelProvider(
@@ -76,14 +73,13 @@ class HomeFragment : Fragment() {
         )
         
         
-        viewModel.firstTimeLiveData.observe(viewLifecycleOwner, {
-
+        viewModel.firstTimeLiveData.observe(viewLifecycleOwner) {
             if (it) {
                 binding.firstTime.visibility=View.VISIBLE
                 binding.progressBar.visibility=View.INVISIBLE
                 viewModel.firstComplete()
             }
-        })
+        }
 
 
         binding.firstTime.setOnClickListener{
@@ -116,27 +112,27 @@ class HomeFragment : Fragment() {
 
 
         ///show weather
-        viewModel.weatherLiveData.observe(viewLifecycleOwner, {
+        viewModel.weatherLiveData.observe(viewLifecycleOwner) {
 
-            binding.progressBar.visibility=View.INVISIBLE
+            binding.progressBar.visibility=View.GONE
+            binding.firstTime.visibility = View.GONE
             applyDatatoScreen(it)
-        })
+        }
 
-        viewModel.erroLive.observe(viewLifecycleOwner, {
-
+        viewModel.erroLive.observe(viewLifecycleOwner) {
             if (it){
                 Snackbar.make(this.requireView(), getString(R.string.no_internet_connection), Snackbar.LENGTH_INDEFINITE )
                     .setAction(getString(R.string.hide)) { }.show()
                 binding.progressBar.visibility=View.INVISIBLE
                 viewModel.errorComplete()
             }
-        })
+        }
 
         return binding.root
     }
 
 
-    fun applyDatatoScreen(it:DataResponse?){
+    private fun applyDatatoScreen(it:DataResponse?){
 
         binding.apply {
 

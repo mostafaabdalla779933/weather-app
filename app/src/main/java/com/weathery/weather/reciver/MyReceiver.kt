@@ -16,7 +16,7 @@ class MyReceiver : BroadcastReceiver() {
         when(intent.action){
 
             AlertData.TAG->{
-                var json:String=intent.getStringExtra(AlertData.TAG)!!
+                val json: String? = intent.getStringExtra(AlertData.TAG)
                 val intent = Intent(context, MyService::class.java)
                 intent.putExtra(AlertData.TAG,json)
                 if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O) {

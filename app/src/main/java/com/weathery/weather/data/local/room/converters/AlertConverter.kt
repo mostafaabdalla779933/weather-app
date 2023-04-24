@@ -6,13 +6,11 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.weathery.weather.model.AlertsItem
 
-import java.util.*
-
 class AlertConverter {
 
     @TypeConverter
     fun toString(list:List<AlertsItem?>? ):String?{
-        return Gson().toJson(list);
+        return Gson().toJson(list)
     }
 
 
