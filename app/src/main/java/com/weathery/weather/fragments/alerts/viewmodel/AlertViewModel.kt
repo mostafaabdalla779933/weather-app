@@ -15,22 +15,18 @@ import java.util.*
 class AlertViewModel(val repo:ILocalRepo): ViewModel()  {
 
     var alertsLiveData=MediatorLiveData<MutableList<AlertData>>()
-   // var sourceLiveData=MediatorLiveData<MutableList<AlertData>>()
     val TAG="main"
     var alarmUtil=AlarmUtil
 
-    @InternalCoroutinesApi
-    fun getAlertsFromRoom(){
 
-        val x=CoroutineScope(Dispatchers.IO).launch {
+    fun getAlertsFromRoom(){
+        CoroutineScope(Dispatchers.IO).launch {
             repo.getAllAlerts().collect {
                 withContext(Dispatchers.Main){
                     alertsLiveData.postValue(it.toMutableList())
                 }
             }
         }
-
-        
     }
     fun addAlarm(alertData: AlertData){
 

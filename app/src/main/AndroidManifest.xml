@@ -30,6 +30,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity=""
+            android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.Dialog.Alert" />
         <activity android:name=".splash.SplashActivity"
             android:theme="@style/Theme.Design.NoActionBar"

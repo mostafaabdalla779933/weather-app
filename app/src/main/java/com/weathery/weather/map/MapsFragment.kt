@@ -1,18 +1,14 @@
 package com.weathery.weather.map
 
-import android.location.Address
 import android.location.Geocoder
 import androidx.fragment.app.Fragment
-
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.weathery.weather.MyApplication
 import com.weathery.weather.R
 import com.weathery.weather.databinding.FragmentMapsBinding
 import com.weathery.weather.databinding.SnackbarBinding
@@ -137,21 +133,21 @@ class MapsFragment : Fragment(){
                 ContextCompat.getColor(requireContext(), android.R.color.transparent)
             )
 
-            var favName = ""
+            var favName :String? = ""
             try {
-                val geocoder = Geocoder(activity?.applicationContext)
-                val list: List<Address> =
-                    geocoder.getFromLocation(latLng?.latitude!!, latLng?.longitude!!, 1)
-                favName = list[0].countryName
+                val geocoder = Geocoder(requireActivity().applicationContext)
+                val list=
+                    geocoder.getFromLocation(latLng?.latitude ?: 0.0, latLng?.longitude ?: 0.0, 1)
+                favName = list?.getOrNull(0)?.countryName
 
                 snackbarBinding.txt.text = favName
                 snackbarBinding.addbtn.setOnClickListener {
                     when (from) {
                         SettingFragment.Tag -> {
-                            viewModel.setLocationFromMap(latLng?.latitude?.toFloat(), latLng.longitude.toFloat())
+                            viewModel.setLocationFromMap(latLng?.latitude?.toFloat() ?: 0F, latLng?.longitude?.toFloat() ?: 0F)
                         }
                         FavoriteFragment.Tag -> {
-                            viewModelTest.addFvaouriteToRoom(Favourite(favName, latLng?.longitude!!, latLng.latitude, null, null), requireContext())
+                            viewModelTest.addFvaouriteToRoom(Favourite(favName ?: "", latLng?.longitude!!, latLng.latitude, null, null), requireContext())
                         }
                     }
                     snackbar.dismiss()
